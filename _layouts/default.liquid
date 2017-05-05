@@ -9,12 +9,15 @@
         {% endif %}
     </head>
     <body>
-    <div>
-      {% if is_post %}
-        {% include '_layouts/post.liquid' %}
-      {% else %}
-        {{ content }}
-      {% endif %}
-    </div>
+        {{ include "_layours/menu.liquid" }}
+        <main>
+            <div>
+              {% if is_post %}
+                {% include '_layouts/post.liquid' %}
+              {% else %}
+                {{ content }}
+              {% endif %}
+            </div>
+        </main>
   </body>
 </html>
