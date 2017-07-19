@@ -34,9 +34,9 @@ results. Tarpaulin is designed for rust and aims to remove lines which are
 
 Currently, tarpaulin implements line coverage and has 
 [coveralls.io](https://coveralls.io) integration. It is linux only and only 
-designed with x86\_64 support (but should be AMD64 compatible). Wider support is
-planned for future expansion, but this should work for the majority of open 
-source projects.
+designed with x86\_64 support (so 64 bit ARM and Intel processors). Wider 
+support is planned for future expansion, but this should work for the majority 
+of users.
 
 By focusing on Rust only and it's build system tarpaulin can potentially provide
 better results by being able to extend information derived from the test 
