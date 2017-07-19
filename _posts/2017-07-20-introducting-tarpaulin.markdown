@@ -1,6 +1,4 @@
-# Introducing cargo-tarpaulin
-
-## Code coverage
+# Code coverage
 
 When people talk about code coverage, they're referring to metrics which show 
 how much of their source code is "covered" by their tests. Now covering the code
@@ -21,7 +19,7 @@ coverage. They also require some effort to execute depending on your language
 and project setup. This is the motivation for tarpaulin, a code coverage tool
 created specifically for rust as a cargo subcommand.
 
-## Why tarpaulin?
+# Why tarpaulin?
 
 [Tarpaulin](https://github.com/xd009642/tarpaulin) uses cargo as a library 
 meaning it can automatically identify files in your project. It can also 
@@ -29,7 +27,10 @@ generate and identify the test executables and run coverage on all of them.
 
 Compare this to kcov where you need to clean the project area, build the test 
 executables then iterate over the executables in target/debug running kcov on 
-each one and merging the reports at the end.
+each one and merging the reports at the end. Additionally, kcov will include 
+extern crate definitions and module statements (`pub mod foo`) in it's coverage
+results. Tarpaulin is designed for rust and aims to remove lines which are 
+"uncoverable" from the coverage results.
 
 Currently, tarpaulin implements line coverage and has 
 [coveralls.io](https://coveralls.io) integration. It is linux only and only 
