@@ -61,7 +61,7 @@ better results by being able to extend information derived from the test
 binaries with information from cargo and the source code itself. By having 
 access to crates like [syntex](https://github.com/serde-rs/syntex), tarpaulin 
 aims to become the first open source code coverage tool to offer a solution for 
-branch and condition coverage.
+condition coverage.
 
 That's all for this relatively short introduction,
 check out the [github repository](https://github.com/xd009642/tarpaulin) for 
