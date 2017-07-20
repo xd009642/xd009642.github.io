@@ -52,7 +52,7 @@ src/unused.rs: 0/4
 
 Currently, tarpaulin implements line coverage and has 
 [coveralls.io](https://coveralls.io) integration. It is linux only and only 
-designed with x86\_64 support (so 64 bit ARM and Intel processors). Wider 
+designed with x86\_64 support (so 64 bit AMD and Intel processors). Wider 
 support is planned for future expansion, but this should work for the majority 
 of users.
 
