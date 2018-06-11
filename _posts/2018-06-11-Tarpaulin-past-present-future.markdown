@@ -32,10 +32,10 @@ wasn't able to be handled and caused a panic. Because of this tarpaulin had to
 move to syn for syntax analysis. It also had to make use of semver exempt code
 to get the source positions from syn.
 
-Because of this you may need `RUSTFLAGS="--cfg procmacro2_semver_exempty"` when
-running `cargo install` for tarpaulin 0.7.0. Another alternative is to use the
-install script to download the binary in github releases for travis or one of
-the [docker images available](https://hub.docker.com/r/xd009642/tarpaulin).
+~~Because of this you may need `RUSTFLAGS="--cfg procmacro2_semver_exempty"` when
+running `cargo install` for tarpaulin 0.6.0.~~ Installing works fine via Cargo!
+Another alternative is to use the install script to download the binary from the
+github releases for travis or one of the [docker images available](https://hub.docker.com/r/xd009642/tarpaulin).
 
 ## 2018 What's planned
 
