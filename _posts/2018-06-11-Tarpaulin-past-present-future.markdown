@@ -1,7 +1,8 @@
-Tarpaulin (or cargo-tarpaulin) is a code coverage tool for Rust. 
-Last year was pretty busy with the launch of the project and the rush of issues
-as people started to use it so this is just a chance to look at what's new with
-version 0.6.0 and what's planned for the rest of this year.
+[Tarpaulin](https://github.com/xd009642/tarpaulin) (or cargo-tarpaulin) is a 
+code coverage tool for Rust. Last year was pretty busy with the launch of the 
+project and the rush of issues as people started to use it so this is just a 
+chance to look at what's new with version 0.6.0 and what's planned for the rest 
+of this year.
 
 ## 2017 A year in review
 
