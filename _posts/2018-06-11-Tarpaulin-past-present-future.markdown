@@ -1,14 +1,12 @@
-# Tarpaulin: Past, Present and Future
-
 Tarpaulin (or cargo-tarpaulin) is a code coverage tool for Rust. 
 Last year was pretty busy with the launch of the project and the rush of issues
 as people started to use it so this is just a chance to look at what's new with
 version 0.6.0 and what's planned for the rest of this year.
 
-# 2017 A year in review
+## 2017 A year in review
 
 So in 2017 I started tarpaulin, largely because I realised it's probably the
-best project name I've came up with but mainly because I found the process of
+best project name I've came up with, but mainly because I found the process of
 using kcov with Rust frustrating. Language agnostic coverage tools tend to only
 work properly with C, struggle with abstractions, and setup is fiddly.
 Whereas building a coverage tool targeted at a specific language means you can
@@ -27,7 +25,7 @@ So after my initial May release tarpaulin can now:
 * Tarpaulin ran on Windows via docker and new releases are now available on
 [docker-hub](https://hub.docker.com/r/xd009642/tarpaulin)
 
-# syntex\_syntax to syn
+### syntex\_syntax to syn
 
 As syntex\_syntax is unmaintained the introduction of nested import statements
 wasn't able to be handled and caused a panic. Because of this tarpaulin had to
@@ -39,19 +37,19 @@ running `cargo install` for tarpaulin 0.7.0. Another alternative is to use the
 install script to download the binary in github releases for travis or one of
 the [docker images available](https://hub.docker.com/r/xd009642/tarpaulin).
 
-# 2018 What's planned
+## 2018 What's planned
 
 So in 2018 there's a few different features and improvements planned but I'll
 focus on the big ones.
 
-## HTML Reports
+### HTML Reports
 
 Tarpaulin will have it's own HTML report format it can generate for people
 who aren't using codecov or coveralls as a web interface to their coverage
 results. These reports will be able to show coverage at a folder level, individual
 file level and also let you inspect the source and see it annotated with the results.
 
-## Branch and condition coverage
+### Branch and condition coverage
 
 So a couple of open source tools provide branch coverage, none provide condition
 coverage. I'm aiming straight for a technical solution that works for condition
@@ -68,7 +66,10 @@ However, implementing a system that can provide condition coverage can provide
 branch and MCDC without extra complexity in the tracing and interpretation of 
 the programs.
 
-## Performance
+There may also be a blog post in the future going into the different types of
+coverage and explaining the pros and cons of them!
+
+### Performance
 
 Instrumenting code with breakpoints and stepping through logging the coverage
 is obviously a slow process. There are a number of flags in tarpaulin to mitigate
@@ -89,7 +90,7 @@ reliant on [rust#35061](https://github.com/rust-lang/rust/issues/35061). Likewis
 [#13](https://github.com/xd009642/tarpaulin/issues/13) coverage of doctests will
 be another tricky one to close.
 
-# Community contributions
+## Community contributions
 
 In 2018 the aim is to remove any barriers to entry for people interested in
 contributing and I'm going to try and start having mentored issues among other
@@ -103,6 +104,8 @@ people who have contributed this year. So thanks to:
 * Robinst
 * Andy128k
 * llogiq
+* tafia
+* rep-nop
 * vberger
 * alex-mckenna
 * quodlibetor
