@@ -33,7 +33,7 @@ wasn't able to be handled and caused a panic. Because of this tarpaulin had to
 move to syn for syntax analysis. It also had to make use of semver exempt code
 to get the source positions from syn.
 
-Because of this you may need `RUSTFLAGS="--cfg procmacro2_semver_exempty"` when
+Because of this you may need `RUSTFLAGS="--cfg procmacro2_semver_exempt"` when
 running `cargo install` for tarpaulin 0.6.0. So just type the following:
 
 `RUSTFLAGS="--cfg procmacro2_semver_exempt" cargo install cargo-tarpaulin`
