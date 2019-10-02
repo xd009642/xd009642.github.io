@@ -120,7 +120,8 @@ removing some, adding others from reading the dissassembly or DWARF dumps of a
 program.
 
 And here is our failing minimal example (but with 4 tests doing the same thing
-not 2).
+not 2). _Open all images in a new tab, they're 4K resolution to fit all the 
+information_
 
 ![A failing test](/assets/20191002/fail.png)
 
