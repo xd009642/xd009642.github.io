@@ -55,8 +55,6 @@ So an issue is a lot easier when you have a minimal reproducible example, and
 for the issue we're tackling there was this one:
 
 ```Rust
-#![feature(async_await, futures_api)]
-
 #[test]
 pub fn a() {
     futures::executor::ThreadPool::new();
