@@ -1,5 +1,7 @@
 _This is a rehosting of a blog originally on www.rs-online.com where our team won a £1,500 prize for the below project. As it's now been taken offline I'm preserving it here!_
 
+_We also won a single desk calendar to share between 3 people at our employer_
+
 This project was created by a three-man team comprising of two hardware
 engineers and a software engineer. From the very beginning, we knew we
 wanted to do something unique and challenging for a Christmas competition. The
