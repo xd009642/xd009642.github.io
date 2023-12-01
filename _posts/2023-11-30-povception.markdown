@@ -124,8 +124,6 @@ day. In terms of the physical side, the DotStar strips got very hot and began to
 slightly peel off so better thermal management or a better adhesive would have
 improved the design.
 
-TODO IMAGE
-
 ![The globe demo with snowfall on the outer ring](/assets/20231130/snow.jpg)
 
 Overall, the project was a success and the team was awarded an innovation prize.
@@ -134,7 +132,7 @@ the project met all its aims. The project is largely open-source with the code
 currently available on GitHub (link at the end), eventually, the mechanical and
 hardware designs will also be uploaded to either GitHub or Thingiverse.
 
-Here's the codeL [link](https://github.com/xd009642/POVception)
+Here's the code [link](https://github.com/xd009642/POVception)
 
 Here's the finished project in action
 
