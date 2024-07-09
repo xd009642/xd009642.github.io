@@ -40,7 +40,7 @@ Ignoring the lines of test code we have two unambiguously coverable lines -
 the function signature and the macro call. And with this in mind coverage
 should be 50%.
 
-But why? Maybe this code which was exercised by tests but can cause a segfault
+Why? Maybe this code which was exercised by tests but can cause a segfault
 shows why:
 
 ```rust
