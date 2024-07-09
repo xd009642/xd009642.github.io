@@ -1,6 +1,6 @@
 # On Coverage and Macros
 
-So as a maintainer of a code coverage tool one of the common issues I get is
+As a maintainer of a code coverage tool one of the common issues I get is
 that the coverage statistics are incorrect. Often there's some validity to
 this based on how dead code has been eliminated or code has been optimised
 sometimes coverage instrumentation is missed and there are false negatives.
@@ -32,7 +32,7 @@ fn is_good() {
 }
 ```
 
-So ignoring the lines of test code we have two unambiguously coverable lines -
+Ignoring the lines of test code we have two unambiguously coverable lines -
 the function signature and the macro call. And with this in mind coverage
 should be 50%.
 
@@ -67,7 +67,7 @@ if tracing::level() == tracing::Level::Trace {
 }
 ```
 
-And in that branch there is code with a segfault. So marking the trace macros
+And in that branch there is code with a segfault. Marking the trace macros
 as covered when they're not being tested does give a false sense of security.
 Then when we actually need trace logging to debug an issue the segfault pops up
 adding to some of the confusion.
