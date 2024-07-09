@@ -1,10 +1,14 @@
 # On Coverage and Macros
 
-As a maintainer of a code coverage tool one of the common issues I get is
-that the coverage statistics are incorrect. Often there's some validity to
-this based on how dead code has been eliminated or code has been optimised
-sometimes coverage instrumentation is missed and there are false negatives.
-However, there are cases when it's correct that the code isn't covered.
+As a maintainer of a [code coverage tool](https://github.com/xd009642/tarpaulin) 
+one of the common issues I get is that the coverage statistics are incorrect. 
+Users may gate CI on coverage percentages to try and ensure they hit a level of
+testing and false-negatives can be seen to hamper this. 
+
+Often there's some validity to this based on how dead code has been eliminated 
+or code has been optimised sometimes coverage instrumentation is missed and 
+there are false negatives. However, there are cases when it's correct that the
+code isn't covered.
 
 Take the following test, what should the coverage be?
 
@@ -72,6 +76,8 @@ as covered when they're not being tested does give a false sense of security.
 Then when we actually need trace logging to debug an issue the segfault pops up
 adding to some of the confusion.
 
+## The Solution
+
 Fortunately, there is an answer to this, I use the
 [`tracing-test`](https://crates.io/crates/tracing-test) crate in projects which
 also gives me a big log dump when a test fails which is more useful to me than
@@ -84,8 +90,8 @@ more you risk coverage becoming deceptive and not guiding you in any useful way.
 For what it's worth my approach is to use coverage as a signal of where I'm
 maybe not testing adequately. I don't aim for high coverage numbers and I use
 it in combination with tools like [cargo-mutants](https://crates.io/crates/cargo-mutants)
-to ensure my testing strategy is sound. Every metric becomes useful when it's
-a target
+to ensure my testing strategy is sound. Every metric becomes useless when it's
+a target.
 
 The relevant GitHub issue that inspired this short post is
 [here](https://github.com/meh/rust-ffmpeg/issues/183)
