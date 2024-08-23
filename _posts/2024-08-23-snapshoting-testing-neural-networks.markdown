@@ -1,6 +1,7 @@
 In this post I'm mainly going to explain a bit about what snapshot testing is
 some pros and cons and how I approached it for an audio processing project at
-work.
+work. And testing a library that is a wrapper around a neural network with some
+bonus logic.
 
 ## What Are They?
 
