@@ -1,5 +1,3 @@
-# Snapshot Testing an AI Project
-
 In this post I'm mainly going to explain a bit about what snapshot testing is
 some pros and cons and how I approached it for an audio processing project at
 work.
