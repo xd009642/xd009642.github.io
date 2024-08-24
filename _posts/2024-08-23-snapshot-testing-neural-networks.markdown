@@ -6,11 +6,11 @@ bonus logic.
 ## What Are They?
 
 Snapshot testing is when we take a "shapshot" of the output or state of the program
-and store that alongside the tests. Then when running the test we run our code,
-generate the same output and then compare it with our stored version.
+and store that alongside the tests. Then when running the test against our code,
+generate the same output and then compare that output with our previously stored version.
 
 You may have seen this used by the Rust compiler if you've ever poked into its
-diagnostic tests. And also in Rust there's a handy crate for it
+diagnostic tests. In Rust there's a handy crate for snapshot testing called 
 [insta](https://crates.io/crates/insta).
 
 Of course, sometimes our tests will fail, when that happens we will either
@@ -102,10 +102,10 @@ event I haven't shown.
 # Snapshot Testing the VAD
 
 Part of making such a library is to test it and make sure it works well
-so we can have confidence throughout our stack. And while the model has
-been benchmarked and we can run it through and compare there are some nuances in
-using a VAD model and configuration which may not be tested by that approach.
-Things like:
+so we can have confidence throughout our stack. The model has been ran on
+a lot of benchmarking data (typically hours) and we have an idea of it's 
+accuracy. However, there are some nuances in using a VAD model and 
+configuration which may not be tested by that approach. Things like:
 
 1. Different audio chunk sizes going in
 2. Different padding values - the silence we allow at the start/end of the audio
@@ -167,7 +167,7 @@ as the timestamp is corrected whereas silence will continue increasing. This is
 a bit of an interesting behaviour which isn't always immediately obvious to
 people looking at the VAD debugging.
 
-_In future we want an API for the neural network logits so we can record them
+_In future we want an API for the neural network outputs so we can record them
 to see how they move above and below the positive and negative thresholds._
 
 The actual snapshot testing code is pretty simple:
