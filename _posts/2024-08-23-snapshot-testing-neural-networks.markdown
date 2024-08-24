@@ -312,3 +312,6 @@ As a final note on more general snapshot testing of neural networks or machine
 learning algorithms. Often you will be porting from Python to Rust, so
 collecting snapshots from the Python code and then using them to test the Rust
 port is a good approach to be confident in your ported implementation.
+
+_Thanks to blueridanus for working with me on this and others for proofreading
+and offering feedback on initial versions of this post._
