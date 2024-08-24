@@ -307,3 +307,8 @@ the development and debugging process more interactively they can prove to be
 a powerful tool to complement your other testing methods. I hope this post has
 proven somewhat enlightening and I did enjoy getting to prototype and
 merge in an idea I've been playing around in my head for a while.
+
+As a final note on more general snapshot testing of neural networks or machine
+learning algorithms. Often you will be porting from Python to Rust, so
+collecting snapshots from the Python code and then using them to test the Rust
+port is a good approach to be confident in your ported implementation.
