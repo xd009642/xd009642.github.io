@@ -1,22 +1,22 @@
-In this post I'm mainly going to explain a bit about what snapshot testing is
+In this post, I'm mainly going to explain a bit about what snapshot testing is
 some pros and cons and how I approached it for an audio processing project at
 work. And testing a library that is a wrapper around a neural network with some
 bonus logic.
 
 ## What Are They?
 
-Snapshot testing is when we take a "shapshot" of the programs output or state
+Snapshot testing is when we take a "shapshot" of the output or state of the program
 and store that alongside the tests. Then when running the test we run our code,
-generate the same output and then compare with our stored version.
+generate the same output and then compare it with our stored version.
 
-You may have seen this used by the Rust compiler if you've ever poked into it's
+You may have seen this used by the Rust compiler if you've ever poked into its
 diagnostic tests. And also in Rust there's a handy crate for it
 [insta](https://crates.io/crates/insta).
 
-Of course sometimes our tests will fail, when that happens we will either
+Of course, sometimes our tests will fail, when that happens we will either
 confirm it's an issue and fix our code or confirm the new snapshot is correct
-and replace the old one. Sometimes a mixture of the two if partially broke
-something when adding a feature.
+and replace the old one. Sometimes it's a mixture of the two if we've partially
+broken something when adding a feature.
 
 The benefit of this approach is we can hit a large amount of our code with
 tests on realistic data/scenarios and do this much quicker than crafting test
@@ -27,17 +27,17 @@ snapshots are to review the greater tendancy people might have to just blindly
 ## Introducing the Project
 
 So at my work [Emotech](https://emotech.ai) I spend a lot of time working on
-audio AI systems. Often these models we want to limit to just running on speech
-data and not any background noise or dead air. For that we use some form of 
+audio AI systems. Often, we want to limit these models to just running on speech
+data and not any background noise or dead air. For that, we use some form of 
 audio segmentation model such as a Voice Activity Detection (VAD) model. We
-recently open sourced a Rust library around a popular one silero which you can
+recently open-sourced a Rust library around a popular one silero which you can
 find [here](https://github.com/emotechlab/silero-rs).
 
 For explaining all of this we do need to know a bit about how the VAD works
 internally. So buckle up!
 
 Inside the VAD we have a positive and a negative speech threshold. These
-function together as a hysteresis, so in some Rust flavoured pseudo-code:
+function together as a hysteresis, so in some Rust-flavoured pseudo-code:
 
 ```rust
 let likelihood = vad.run(audio_frame);
@@ -45,7 +45,7 @@ if last_state == State::Silence {
     if likelihood > positive_speech_threshold {
         last_state = State::Speaking;
     }
-} else { // We're speaking there's only two states
+} else { // We're speaking there're only two states
     if likelihood < negative_speech_threshold {
         last_state = State::Silence;
     }
@@ -95,15 +95,15 @@ if last_state == State::Silence {
 There's some extra complexity with handling the vad frames vs samples vs
 timestamps, but this is pretty close to all the details! There is some mutable
 state that is tracked and updated based on more data coming in which is part of
-what makes testing so important. Also we currently apply a pre-speech padding
+what makes testing so important. Also, we currently apply a pre-speech padding
 which would be an extra saturating subtraction when emitting the speech start
 event I haven't shown.
 
 # Snapshot Testing the VAD
 
-Part of making such a library we want to test it and make sure it works well
-so we can have confidence all throughout our stack. And while the model has
-been benchmarked and we can run it through and compare there's some nuances in
+Part of making such a library is to test it and make sure it works well
+so we can have confidence throughout our stack. And while the model has
+been benchmarked and we can run it through and compare there are some nuances in
 using a VAD model and configuration which may not be tested by that approach.
 Things like:
 
@@ -113,30 +113,30 @@ Things like:
 4. Sensitivity
 
 So an easy way to test this is to generate some test audio and then run all
-the audios through the VAD with different parameters and chunkings. And utilise
+the audio through the VAD with different parameters and chunkings. And utilise
 snapshot testing to make sure they're all as expected. Plus by running on
 representative data we can increase our confidence things work as expected!
 
 But because of this, while it's useful we really can't use insta.
 
-A text diff of our structures isn't useful, long float arrays of durations,
-timestamps. These are things that you can't really review as text diffs. And
-with that we lose a lot of insta's DX improvements.
+A text diff of our structures isn't useful, long float arrays of durations and
+timestamps. These are things that you can't review as text diffs. And
+with that, we lose a lot of insta's DX improvements.
 
-Instead there's going to be a slightly different approach. 
+Instead, there's going to be a slightly different approach. 
 
 1. Implement a test function that takes in the means to run the model
 2. Run through our dataset with the given configuration
-3. Generte and save a snapshot in the target directory
+3. Generate and save a snapshot in the target directory
 4. Load the reference snapshot from our test directory
 5. For each file compare the snapshots
 6. Highlight areas where they differ and provide a script to plot snapshots and help debug
 
-Replacing snapshots will then be manually done by the user, because the
+Replacing snapshots will then be manually done by the user because the
 investigation might take deeper analysis the workflow is designed for less
 immediate responses.
 
-The snapshots I chose to save in json for some human readability and the Rust
+The snapshots I chose to save in JSON for some human readability and the Rust
 structs I save the data into are as follows:
 
 ```rust
@@ -176,10 +176,10 @@ The actual snapshot testing code is pretty simple:
 2. Load snapshot
 3. Check
 
-The only thing that is kind of atypical is that I don't just `assert_eq` on the
+The only thing that is slightly atypical is that I don't just `assert_eq` on the
 two `Summary` objects and call it a day. Aside from the floating point
-parameters in the `VadConfig` this just doesn't feel like the right approach.
-Namely because the `Vec<usize>` fields can be hundreds of elements long and the
+parameters in the `VadConfig` this doesn't feel like the right approach.
+Namely, because the `Vec<usize>` fields can be hundreds of elements long and the
 debug printout is frankly not useful (though debug is derived in case someone
 wants to look at it).
 
@@ -226,7 +226,7 @@ if !failing_files.is_empty() {
 }
 ```
 
-Notice that we print out a python command you can just run to debug the first
+Notice that we print out a Python command you can run to debug the first
 file with a deviation in the results! After altering a snapshot to make it fail
 I got the following printout:
 
@@ -272,9 +272,9 @@ And if I run the command:
 
 ![Charts detailing the vad parameters over time](/assets/20240823/plot.png)
 
-So in the top plot we can see the audio wave and the shaded areas show where
-the VAD is active. The green dashed line shows where the VAD started with the
-pre-speech padding removed when we're confident on the location (this is hard
+So in the top plot, we can see the audio wave and the shaded areas show where
+the VAD thinks speech is. The green dashed line shows where the VAD started with the
+pre-speech padding removed when we're confident with the location (this is hard
 to tell at the start of the audio). The red line shows when the redemption
 threshold was hit and the end event was emitted.
 
@@ -289,8 +289,8 @@ While developing this and testing with chunk sizes below a VAD frame (30ms)
 I found that none of the samples triggered with 20ms chunk sizes. This is far
 smaller than anything we've tried in prod but there was a little issue with
 handling remainders that meant that all the samples were ignored. We also found
-a repeat processing issue on chunk sizes that aren't a multiple of 30ms that 
-lead to the remainder being processed twice. You can see a bit of these in
+a repeat processing issue on chunk sizes that aren't a multiple of 30ms which 
+led to the remainder being processed twice. You can see a bit of these in
 the PRs I'll link down below:
 
 1. [Snapshot Testing PR](https://github.com/emotechlab/silero-rs/pull/11)
@@ -298,12 +298,12 @@ the PRs I'll link down below:
 
 ## Conclusion
 
-Snapshot testing does have it's downsides. If you're not vetting the snapshots,
+Snapshot testing does have its downsides. If you're not vetting the snapshots,
 the data isn't realistic or they're treated with a lack of care they could make
 a project look more mature than it is. If they're brittle and change often the
 overhead on developers to push forwards simple changes can be too painful. 
-However, for hard to test code particularly code where tests can help drive
+However, for hard-to-test code particularly code where tests can help drive
 the development and debugging process more interactively they can prove to be
 a powerful tool to complement your other testing methods. I hope this post has
-proven somewhat enlightening and I did really enjoy getting to prototype and
+proven somewhat enlightening and I did enjoy getting to prototype and
 merge in an idea I've been playing around in my head for a while.
