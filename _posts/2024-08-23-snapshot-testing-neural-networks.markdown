@@ -283,6 +283,11 @@ for the redemption threshold. We can see the blue line intersecting the
 dotted line coincides with the redemption frame marker in the top plot as
 well as the speech frame length decreasing as the correct is applied.
 
+_Extra post posting edit, this Monday I've updated it to include the network
+outputs into the snapshot tests!_
+
+![New updated plot](/assets/20240823/new_plot.png)
+
 ## Fun Bonus Bug-fix
 
 While developing this and testing with chunk sizes below a VAD frame (30ms)
