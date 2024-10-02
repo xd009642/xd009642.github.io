@@ -1,5 +1,3 @@
-# Sign Languages, Diglossia and other Diversions
-
 While working on speech/language technology for other languages sometimes I come
 across linguistic diversions which are endlessly fascinating. I also quite
 enjoy reading things where people investigate and learn about a topic
