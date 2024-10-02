@@ -5,7 +5,7 @@ bonus logic.
 
 ## What Are They?
 
-Snapshot testing is when we take a "shapshot" of the output or state of the program
+Snapshot testing is when we take a "snapshot" of the output or state of the program
 and store that alongside the tests. Then when running the test against our code,
 generate the same output and then compare that output with our previously stored version.
 
@@ -21,7 +21,7 @@ broken something when adding a feature.
 The benefit of this approach is we can hit a large amount of our code with
 tests on realistic data/scenarios and do this much quicker than crafting test
 cases manually. A negative is that the more your outputs change or the harder
-snapshots are to review the greater tendancy people might have to just blindly
+snapshots are to review the greater tendency people might have to just blindly
 "bless" the new snapshots resulting in tests that aren't helping you.
 
 ## Introducing the Project
@@ -200,7 +200,7 @@ for sample in summary.summary.keys() {
     if baseline != current {
         println!("{} is failing", sample.display());
         if baseline.transitions != current.transitions {
-            println!("\tDifference in transitons list!");
+            println!("\tDifference in transitions list!");
         }
         if baseline.current_silence_samples != current.current_silence_samples {
             println!("\tDifference in silence lengths");
@@ -249,7 +249,7 @@ Checking snapshot is generated with same configuration!
 tests/audio/rooster.wav is failing
 	Difference in speech lengths
 tests/audio/sample_1.wav is failing
-	Difference in transitons list!
+	Difference in transitions list!
 
 You have some failing files and targets. If you get a snapshot file and audio you can plot it via our plot_audio script e.g.
 
