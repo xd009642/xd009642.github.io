@@ -114,7 +114,7 @@ and removed everything else. Used a toml file to specify addresses to instrument
 and a path to a binary and made [minitarp](https://github.com/xd009642/minitarp)
 to generate graphs showing the lifetime of the test. This also let me take the
 instrumentation points Tarpaulin derived as a starting point and tweak them
-removing some, adding others from reading the dissassembly or DWARF dumps of a
+removing some, adding others from reading the disassembly or DWARF dumps of a
 program.
 
 And here is our failing minimal example (but with 4 tests doing the same thing
