@@ -25,7 +25,7 @@ Without further ado the system.
 
 ## The System
 
-![image info](./diagrams/basic_system.svg)
+![image info](/assets/streaming_series/basic_system.svg)
 
 Here I've generally split the system into 3 different concerns:
 
