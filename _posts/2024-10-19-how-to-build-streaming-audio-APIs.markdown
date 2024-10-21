@@ -1,5 +1,3 @@
-# Introduction
-
 This is the start of a series about implementing bidirectional audio streaming
 APIs. You can find all the code [here](https://github.com/xd009642/streamer-template/).
 
@@ -64,7 +62,7 @@ careful if you poke around the code because here be dragons. As a rough roadmap
 of some planned sections:
 
 1. Basic Introduction (this post)
-2. API design
+2. [API design]({% post_url 2024-10-20-designing-a-streaming-audio-API %})
 3. Testing the system
 4. Improving streaming performance via batching futures
 5. Instrumented the service for production monitoring (traces, metrics etc)

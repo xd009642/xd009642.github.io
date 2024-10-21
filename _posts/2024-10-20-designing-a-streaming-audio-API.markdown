@@ -1,5 +1,3 @@
-# Designing an Audio Streaming API
-
 This is part of a series on creating a streaming audio service in Rust, with
 services such as live transcription in mind. All the code is [here](https://github.com/xd009642/streamer-template/)
 
