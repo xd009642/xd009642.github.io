@@ -66,7 +66,10 @@ via rayon and do the docker command in a separate thread.
 But what about those apt-get commands? I probably can't parallelise them because
 of the package lock. And here comes a suggestion from a friend:
 
-> cursed idea for apt, if you really wanted to go zoom. you could run the apt command with strace in your CI to generate a list of files it deletes, and then download this list and delete them in parallel as fast as you can, since i assume apt is going to be pretty slow for a file deletion tool
+> cursed idea for apt, if you really wanted to go zoom. you could run the apt
+> command with strace in your CI to generate a list of files it deletes, and then
+> download this list and delete them in parallel as fast as you can, since i assume
+> apt is going to be pretty slow for a file deletion tool
 
 That's right! apt-get is just a shitty rm in this case. I know, I'll run a CI
 job that does the apt-get commands, parse the strace output and build up a file
@@ -212,4 +215,211 @@ if you're interested. And it takes about 15-20s to run.
 
 ## Publishing It.
 
-todo!()
+Now seems like a good time to figure out a way to put this on the Github
+marketplace. First off doing an actual release of the binary including
+a github release will be needed. This is because we don't want to build
+the code via `cargo install` in CI because that'll just be a bit too slow.
+Instead I plan on using `cargo-binstall` which will download a binary from
+a Github release page.
+
+Going into settings/actions and changing workflow permissions to allow writing,
+then adding a crates.io API token to the environment secrets means I can
+use this simplified release CI from tarpaulin:
+
+```
+name: Release
+on:
+  push:
+    tags:
+      - '[0-9]+.*'
+jobs:
+  create-release:
+    name: "Create GitHub release"
+    # only publish from the origin repository
+    if: github.repository_owner == 'xd009642'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: taiki-e/create-gh-release-action@v1
+        with:
+          changelog: CHANGELOG.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  crates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: publish package to crates
+        run: |
+          cargo package
+          cargo publish --token ${{ secrets.CARGO_TOKEN }}
+
+  binaries:
+    name: "Upload release binaries"
+    needs:
+      - create-release
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: taiki-e/upload-rust-binary-action@v1
+        with:
+          bin: ci-hoover
+          target: ${{ matrix.target }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+Next up, Github actions marketplace things have an `action.yml`, so I'll just
+initially pinch the one from free-disk-space and change the running part to
+install ci-hoover with cargo-binstall and run it. I'll skip most of the args
+for some brevity:
+
+```yml
+name: "ci-hoover"
+description: "A configurable GitHub Action to free up disk space on an Ubuntu GitHub Actions runner. Inspired by free-disk-space."
+
+# See: https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#branding
+branding:
+  icon: "trash-2"
+  color: "orange"
+
+inputs:
+  android:
+    description: "Remove Android runtime"
+    required: false
+    default: "true"
+
+# More args
+
+runs:
+  using: "composite"
+  steps:
+    - uses: cargo-bins/cargo-binstall@main
+      run: |
+        set -eu
+        export ANDROID = ${{ inputs.android }}
+        export DOT_NET = ${{ inputs.dot_net }}
+        export HASKELL = ${{ inputs.haskell }}
+        export LARGE_PACKAGES = ${{ inputs.large_packages }}
+        export DOCKER_IMAGES = ${{ inputs.docker_images }}
+        export TOOLS_CACHE = ${{ inputs.tools_cache }}
+        export SWAP_STORAGE = ${{ inputs.swap_storage }}
+
+        cargo binstall ci-hoover
+
+        sudo ci-hoover
+
+```
+
+I'm using envy to get the configuration from environment variables which seemed
+a bit nicer than doing things like `--android true|false`. 
+
+Time to publish to marketplace, but this then involves going into the release
+page generated and editing it to publish to the marketplace... I should fix
+that. But it doesn't look like there's a way in the action for makign release
+pages and looking at some of the maintained ones I don't see an option so I'll
+just leave it for now. After all this may be my only release this is a bit of
+a shitpost.
+
+Bad Github UI alert, I do the draft release, edit the existing release notes.
+Then realising I have to accept the terms and conditions go onto that popup and
+accept. Then all my categories/tag stuff for the marketplace entry are wiped, c'mon
+Github be chill.
+
+Add a lil action just to try this action via the marketplace and it doesn't work.
+
+```
+Error: xd009642/ci-hoover/0.1.0/action.yml (Line: 51, Col: 7): Unexpected value 'run'
+```
+
+hmm maybe before the run I need a `- shell: bash`. Google seems to suggest that's
+the syntax to use bash in an action. Gosh if only there was a way to test this
+which doesn't involve creating a release page on github and publishing a pre-release...
+
+Well I'll just draft a release and give it a tag that won't trigger a cargo publish
+and then just force my way through it like I'm bludgeoning my face with a hammer
+repeatedly. Because that's what CI is like.
+
+```
+/home/runner/work/_temp/a5d46914-9fa4-4f1f-a508-7b131608f423.sh: line 2: export: `=': not a valid identifier
+```
+
+Ah fuck spaces between equals in exports. I don't know why I did that. If this
+was a normal tool I would have ran the equivalent bash script on my machine
+but this deletes a ton of stuff so I didn't want to.
+
+Okay third times the charm right? Yeah third, it didn't take six goes to do it...
+
+This is the final run part of the action:
+
+```yml
+runs:
+  using: "composite"
+  steps:
+    - uses: cargo-bins/cargo-binstall@main
+    - shell: bash
+      run: |
+        set -eu
+        export ANDROID=${{ inputs.android }}
+        export DOT_NET=${{ inputs.dot_net }}
+        export HASKELL=${{ inputs.haskell }}
+        export LARGE_PACKAGES=${{ inputs.large_packages }}
+        export DOCKER_IMAGES=${{ inputs.docker_images }}
+        export TOOLS_CACHE=${{ inputs.tools_cache }}
+        export SWAP_STORAGE=${{ inputs.swap_storage }}
+
+        cargo binstall -y ci-hoover
+        sudo mv $HOME/.cargo/bin/ci-hoover /bin
+
+        sudo ci-hoover
+```
+
+And this is the action which uses it in an image to clean it up:
+
+```yml
+name: Marketplace
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ci-hoover
+        uses: xd009642/ci-hoover@0.1.1
+```
+
+And some output from ci-hoover:
+
+```
+Name	Total	Used	Available
+"/dev/root"	77.9 GB	55.5 GB	22.3 GB
+"/dev/sda15"	109.4 MB	6.3 MB	103.1 MB
+"/dev/sdb1"	78.7 GB	8.3 GB	70.3 GB
+Deleting things!
+Name	Total	Used	Available
+"/dev/root"	77.9 GB	24.2 GB	53.7 GB
+"/dev/sda15"	109.4 MB	6.3 MB	103.1 MB
+"/dev/sdb1"	78.7 GB	4.0 GB	74.6 GB
+Finished in 63.809372 seconds
+```
+
+I should really make those ascii tables look a bit nicer... But I
+have clawed back more than free-disk-space 53.7GB free instead of 41GB.
+
+## All Done
+
+Not quite. For some reason when doing this from the marketplace it always
+takes about 1 minute. But when installing release in my CI and running it I
+get times of about 16s. Why is it slower as a Github marketplace action?
+
+Actually, no I'm tired and I'll leave that as a question for the reader.
