@@ -227,6 +227,7 @@ then adding a crates.io API token to the environment secrets means I can
 use this simplified release CI from tarpaulin:
 
 ```yml
+{% raw %}
 name: Release
 on:
   push:
@@ -274,6 +275,7 @@ jobs:
           target: ${{ matrix.target }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+{% endraw %}
 ```
 
 Next up, Github actions marketplace things have an `action.yml`, so I'll just
@@ -282,6 +284,7 @@ install ci-hoover with cargo-binstall and run it. I'll skip most of the args
 for some brevity:
 
 ```yml
+{% raw %}
 name: "ci-hoover"
 description: "A configurable GitHub Action to free up disk space on an Ubuntu GitHub Actions runner. Inspired by free-disk-space."
 
@@ -315,7 +318,7 @@ runs:
         cargo binstall ci-hoover
 
         sudo ci-hoover
-
+{% endraw %}
 ```
 
 I'm using envy to get the configuration from environment variables which seemed
@@ -360,6 +363,7 @@ Okay third times the charm right? Yeah third, it didn't take six goes to do it..
 This is the final run part of the action:
 
 ```yml
+{% raw %}
 runs:
   using: "composite"
   steps:
@@ -379,6 +383,7 @@ runs:
         sudo mv $HOME/.cargo/bin/ci-hoover /bin
 
         sudo ci-hoover
+{% endraw %}
 ```
 
 And this is the action which uses it in an image to clean it up:
