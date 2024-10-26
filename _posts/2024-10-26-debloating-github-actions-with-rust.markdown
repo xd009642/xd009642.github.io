@@ -226,7 +226,7 @@ Going into settings/actions and changing workflow permissions to allow writing,
 then adding a crates.io API token to the environment secrets means I can
 use this simplified release CI from tarpaulin:
 
-```
+```yml
 name: Release
 on:
   push:
