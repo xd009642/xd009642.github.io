@@ -326,7 +326,7 @@ a bit nicer than doing things like `--android true|false`.
 
 Time to publish to marketplace, but this then involves going into the release
 page generated and editing it to publish to the marketplace... I should fix
-that. But it doesn't look like there's a way in the action for makign release
+that. But it doesn't look like there's a way in the action for making release
 pages and looking at some of the maintained ones I don't see an option so I'll
 just leave it for now. After all this may be my only release this is a bit of
 a shitpost.
