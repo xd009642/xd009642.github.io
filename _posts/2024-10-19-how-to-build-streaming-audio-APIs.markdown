@@ -63,9 +63,11 @@ of some planned sections:
 
 1. Basic Introduction (this post)
 2. [API design]({% post_url 2024-10-20-designing-a-streaming-audio-API %})
-3. Testing the system
-4. Improving streaming performance via batching futures
-5. Instrumented the service for production monitoring (traces, metrics etc)
+3. [Audio Decoding and Resampling](% post_url 2024-11-04-streaming-audio-APIs:-audio-decoding %})
+4. Building the API and the Model Stub
+5. Testing the system
+6. Improving streaming performance via batching futures
+7. Instrumented the service for production monitoring (traces, metrics etc)
 
 If this sounds interesting keep and ear out more posts will drop in future
 at indeterminable times.
