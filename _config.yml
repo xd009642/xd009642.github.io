@@ -23,6 +23,7 @@ github_username:  xd009642
 
 # Build settings
 markdown: kramdown
+mathjax: true
 theme: minima
 gems:
   - jekyll-feed
