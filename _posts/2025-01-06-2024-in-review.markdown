@@ -1,0 +1,191 @@
+I feel like I've managed to do quite a lot this year and also have a lot
+planned. With that in mind why not reflect a bit on what was planned, done and
+what I'm going to be doing.
+
+When relevant links aren't mentioned within the text body I'll pop them at
+the bottom but I might be inconsistent in this. Sorry (not sorry).
+
+# rustnation 
+
+The start of the year was pretty much dominated by my preparation for
+Rustnation at the end of March. I'd put forwards an ambitious brief for the
+talk given the time I had. My talk _Creating a Text-To-Speech System in Rust_
+involved a mix of open sourced Emotech code and some code written for the talk.
+
+As well as a fully working repo there was a repo for SSML parsing and a
+signal-processing based vocoder with small blog/tutorial provided. And a lot of
+documentation comments about machine learning in general and things I tried that
+did and didn't work. 
+
+Below is an example doc comment on a neural network model I initially tried to
+use and abandoned. I kept the source files in the repo and documented them all
+for anyone really interested. An example of documenting issues with a failed
+approach:
+
+> After getting our ONNX file however it uses the loop operator and
+> has dynamically sized inputs within the model. These are two things that
+> proved fatal to running it in a Rust runtime.
+>
+> After finding out about ORT I tried it there, unfortunately pytorch can output ONNX that
+> doesn't obey the standard (-1 dimension size in expand nodes). 
+>
+> There's an old version of torch used in speedyspeech, one with worse ONNX support. Any changes
+> to the pretrained graph would need to be done via this old version of torch and torch doesn't
+> come with a clear upgrade path. To run speedyspeech I would have had to port the code to a much
+> newer torch version and retrain a model from scratch.
+
+After all is said and done I think I did a good job and I've gotten a lot of
+positive feedback from people during the conference and even months afterwards.
+I've also seen some of my feedback about DX issues in some ML libraries result
+in an issue on a relatively new project rten to make sure the next generation of
+libraries are easier to use ([the issue](https://github.com/robertknight/rten/issues/71)).
+This to me is a sign that struggling through 4 different ML inference frameworks
+to find I couldn't get an open source model working was worth it in the end.
+
+There's no plans currently to continue this project but I might be tempted to
+do some future conference work on more statistical less neural-network based
+models - but no promises!
+
+* [The repo](https://github.com/xd009642/xd-tts)
+* [The talk](https://www.youtube.com/watch?v=HiqId_9pysM)
+
+# tarpaulin 
+
+[Tarpaulin](https://github.com/xd009642/tarpaulin) saw 11 releases this year. I have to admit I've had periods of burnout
+working on it so it's been in a "soft" maintenance mode. I've still been fixing
+issues, updating docs and helping users who post things but I've not maintained
+any meaningful velocity on it and there's a number of hard issues still to be
+tackled.
+
+There's been some improvements with handling toolchains in non-standard places,
+windows and mac support improved. Logs and error messages also improved to
+help people debug coverage issues more meaningfully.
+
+One thing I also did was redo the item naming for things like lcov, now they
+spit out names in the same (albeit assumed unstable) form that
+[cargo-mutants](https://github.com/sourcefrog/cargo-mutants) uses. With this
+change it's possible with either some manual copy and pasting or script glue
+to use coverage to exclude untested code from cargo-mutants runs saving testing
+time. You can see my comment about this
+[in this issue](https://github.com/sourcefrog/cargo-mutants/issues/24#issuecomment-2143945313).
+
+Aside from this I've mentored one person through fixing an issue they had in
+tarpaulin. This is unusual but something I'm happy with, a lot of people's
+issues are more in the harder problems and the difficulty cliff is intimidating
+so I don't often get to mentor anyone like this successfully. It's always nice 
+when it works out. You can see the PR [here](https://github.com/xd009642/tarpaulin/pull/1667).
+
+I did submit a tarpaulin talk to Eurorust but it wasn't accepted, c'est la
+vie! After Rustnation I did go for a much less ambitious proposal though
+so at least I wasn't too invested!
+
+Next year I have some plans to fix some of the lingering ptrace issues that
+make tests flaky. Unfortunately, the LLVM coverage is limited in what types of
+things it can collect coverage for and while it's generally more accurate if
+you fall into those niches you're not going to have results you're happy with.
+Additionally things like `#[tracing::instrument]` attributes cause functions
+to be removed from the results. Given these issues it may be that ptrace and
+output formats are the main selling point of tarpaulin against other things
+like [cargo-llvm-cov](https://github.com/taiki-e/cargo-llvm-cov), gcov or 
+rawdogging rustc llvm instrumentation.
+
+Two years ago I had started to look at using [minicov](https://github.com/Amanieu/minicov)
+for embedded on-device coverage. I may go back to those experiments, or I
+think I see a way to use minicov to fix some issues in the llvm profiling 
+runtime when it comes to things like tests with forks/signals/required-panics
+when a custom test harness is used. I doubt this will be massively relevant to
+most people though so it may take a backseat - I may just blog about the ideas
+but I want to test some assumptions first.
+
+# dechib
+
+I started work on a RDBMS using rocksdb called
+[dechib](https://github.com/xd009642/dechib). Unfortunately, I haven't had much
+time to work on it so I just have table creation, and insertion plus some
+constraints implemented. Hopefully, next year I'll have time to implement
+actual queries - part way through the design for querying from inserted data.
+
+Not much to write about here but hopefully there will be in future! This is
+just an educational project working on the inner systems that interest me
+most. Never use it in production if I get it working.
+
+# object-trustfall-adapter
+
+Inspired by [Predrag](https://github.com/obi1kenobi) I wanted to make a
+trustfall adapter around ELF files to query ELF files like a database for
+reverse engineering purposes. Nothing really to share yet, but this is me
+committing to building in public.
+
+* [The repo](https://github.com/xd009642/object-trustfall-adapter)
+
+# bidirectional audio streaming blog series
+
+In my work we do some audio streaming services for things like live
+transcription or streaming TTS. However, streaming systems are complicated and
+it can often be a source of confusion for newcomers to the organisation.
+Inspired by an actual problem I started a blog series about this which
+I've been posting on the socials™. Four posts are done, one is in late stage
+draft and another one is in review and another is in early stage draft.
+
+Next year I aim to finish all the planned chapter so publish the 3 in-progress
+posts and add ones on: observability, testing and the gRPC API. I'm excited for
+when the metrics post is ready to be published (I am trying to keep to a natural
+order). I've put quite a bit of work into it and it covers a lot that I've rarely 
+seen written about.
+
+Longer term (beyond the year), I want to do some tooling around [AsyncAPI](https://www.asyncapi.com/en)
+in Rust that matches some of what we have for OpenAPI/Swagger. Also, a 
+websocket mocking library which I'm starting to draft.
+
+
+* [The repo](https://github.com/xd009642/streamer-template/) 
+* [websocket mocking library (not properly started)](https://github.com/xd009642/wiremock)
+
+# rustybug
+
+I bought an early access copy of [Building a Debugger - Sy Brand](https://nostarch.com/building-a-debugger)
+and have been working through it during my christmas holidays as a means of
+relaxation! I'm doing it in Rust so it will hopefully feedback back into
+fixing some of tarpaulin's ptrace code.
+
+I'm also going to use this to find any opportunities to add PRs to [libc](https://github.com/rust-lang/libc)
+or [nix](https://github.com/nix-rust/nix) if I spot any APIs that need some
+love. The first of these is already open: [libc PR](https://github.com/rust-lang/libc/pull/4225).
+
+Expect some blog posts about this when I have something that works _good enough_!
+
+* [The repo](https://github.com/xd009642/rustybug)
+
+# outside of technology
+
+Life isn't just Rust though (or so I hear). Outside of Rust I've made decent
+progress in learning Japanese (for my partners family not
+ weebery... okay maybe also some weebery). I'll be spending a number of months
+ in Japan as a result and hope to made even greater strides. Also, being a
+ stereotypical software dev I have some fitness goals related to climbing,
+ I got into board climbing last year and will continue with it. I won't bore
+ you with those details!
+
+ I've ready a number of Ursula K. Le Guin stories (_The Left Hand of Darkness_ and
+ collected short stories). And the first two _Hyperion_ books by Dan Simmons.
+ I'll be finishing Hyperion next year, and hopefully also the Wizard of Eathsea
+ series. I'll also be reading _How to Blowup a Pipeline_ by Andreas Malm, and
+ _Abroad in Japan_ by Chris Broad. This year I've kind of read less but the
+ Ursual K. Le Guin short stories book was a chonker.
+
+ I've watched way too much to enumerate and I'll probably continue to do that.
+ The next movie I'll likely watch is [Decision to Leave](https://letterboxd.com/film/decision-to-leave/)
+ and I'm very excited to see the new [Nosferatu](https://letterboxd.com/film/nosferatu-2024/).
+
+ For gaming I played a lot last year. This year I plan on playing
+ [1000xRESIST](https://store.steampowered.com/app/1675830/1000xRESIST/),
+ [Chasing Static](https://store.steampowered.com/app/1319420/Chasing_Static/) and 
+ [Hollowbody](https://store.steampowered.com/app/2123640/Hollowbody/?curator_clanid=43360180).
+ I'll also finish Half-Life which I'm playing all the way through for the first
+ time (I know I know better late than never).
+
+ The last year my favourite game I played was [SOMA](https://store.steampowered.com/app/282140/SOMA/).
+ I might have to play all the amnesia games if they have vibes that impeccable!
+
+ Well that's it for my year in review and what's coming up. Some of this will
+ be blogged some of it you may never hear about again. Laters 👋
