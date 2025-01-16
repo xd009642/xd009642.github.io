@@ -91,8 +91,19 @@ The config type `T` is often used in a type-state manner. Looking at the `uuid`
 fake impl we can see types for `UUIDv8` etc which are provided like
 `impl Dummy<UUIDv8> for Uuid`.
 
-In the new `fake/src/impls/base64/mod.rs` the initial implementation looks something
-like:
+There's not that many variants in base64, looking at the engine the main things
+we can vary are:
+
+1. The data being encoded as base64
+2. Whether we pad the data or not.
+
+To vary these we'll use the `Faker` type to generate random data and a random
+boolean and then encode the base64 using these. My initial errors all boiled 
+down to not using the cheaply constructed `Faker` type. But once I realised
+that it felt pretty simple.
+
+In the new `fake/src/impls/base64/mod.rs` the initial implementation looks
+something like:
 
 ```rust
 use crate::{Dummy, Fake, Faker};
@@ -117,14 +128,69 @@ impl Dummy<Base64> for String {
 Here we can use this as follows:
 
 ```rust
-String::dummy_with_rng(&Base64, rng);
+let fake_base64: String = String::dummy_with_rng(&Base64, rng);
 ```
 
 Which isn't super ergonomic but it serves a purpose. We ideally want to implement 
 for `Dummy<Faker>` because then we can use the cheaply constructed `Faker` type to
 generate base64 values.
 
-This is the implementation I opened the PR with:
+If we do this our code can look like:
+
+```rust
+let fake_base64: String = Base64.fake();
+```
+
+Right, so we need to implement `Dummy<Faker>` for something, and we can't
+implement it for a `String` directly because `fake` can already generate
+fake strings. This means we need some intermediate wrapper type and then
+all our generics should just flow together.
+
+With this in mind I added this to the file after some fiddling:
+
+```rust
+pub struct Base64Value(pub String);
+
+impl Dummy<Faker> for Base64Value {
+    fn dummy_with_rng<R: rand::Rng + ?Sized>(config: &Faker, rng: &mut R) -> Self {
+        let s = String::dummy_with_rng(&Base64, rng);
+        Base64Value(s)
+    }
+}
+```
+
+A bunch of the fiddling was whether the previous code should live in this impl
+and the implementation on `String` use it or vice versa. I struggled a bit to
+get that working with the trait bounds and ultimately it doesn't matter which
+way round and this way is the path of least resistance.
+
+With these two in place we can look at adding a test. The majority of the fake
+tests are determinism tests ensuring that with the same seed we get the same
+faked values. There's a number of macros to define these but if you look at 
+the file you can just copy the pattern. Our test then looks like so:
+
+```rust
+#[cfg(feature = "base64")]
+mod base64 {
+    use fake::base64::*;
+    use fake::{Fake, Faker};
+    use rand::SeedableRng as _;
+
+    check_determinism! { one fake_base64, Base64Value, Faker }
+    check_determinism! { one fake_url_safe_base64, UrlSafeBase64Value, Faker }
+}
+```
+
+Add the public re-exports and mod statements matching the patterns as well and we
+have a working implementation! 
+
+The only other thing is to look at the `base64` crate and see if there's any
+other configurations we should look at supporting. I saw there were engines to
+generate URL safe base64 so implemented them much the same and then called it a
+day!
+
+This is the implementation I opened [the PR](https://github.com/cksac/fake-rs/pull/216)
+with which was ultimately merged:
 
 ```rust
 use crate::{Dummy, Fake, Faker};
@@ -178,5 +244,30 @@ impl Dummy<Faker> for UrlSafeBase64Value {
         let s = String::dummy_with_rng(&UrlSafeBase64, rng);
         UrlSafeBase64Value(s)
     }
+}
+```
+
+And here is a small test program showing it being used including with the
+`derive` feature:
+
+```rust
+use fake::{Dummy, Fake, Faker};
+use fake::base64::Base64;
+
+#[derive(Debug, Dummy)]
+pub struct FakeMe {
+    #[dummy(faker =  "Base64")]
+    base64: String,
+}
+
+
+fn main() {
+    let f: FakeMe = Faker.fake();
+    println!("{:?}", f);
+
+    let fake_string: String = Base64.fake();
+    println!("{}", fake_string);
+
+    let fake_string: String = String::dummy(&Base64);
 }
 ```
