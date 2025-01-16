@@ -269,5 +269,6 @@ fn main() {
     println!("{}", fake_string);
 
     let fake_string: String = String::dummy(&Base64);
+    println!("{}", fake_string);
 }
 ```
