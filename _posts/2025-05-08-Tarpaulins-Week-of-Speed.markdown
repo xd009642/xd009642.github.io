@@ -53,9 +53,9 @@ Then for testing I'll run:
 ```sh
 time cargo tarpaulin --engine llvm --skip-clean
 // SNIP tarpaulin output
-real	37m53.762s
-user	36m30.091s
-sys	1m2.349s
+real	41m34.411s
+user	40m1.784s
+sys	1m4.368s
 ```
 
 Looking, I can also see we generated 37 profraws so we're dealing with at least 37
@@ -243,24 +243,40 @@ If you want to understand more about perf and getting useful calls for it you
 probably want to look at anything Brendan Gregg has written [link](https://www.brendangregg.com/perf.html).
 Also Denis Bakhvalov's book is great [link](https://products.easyperf.net/perf-book-2).
 
+Unfortunately, I lost the flamegraph I originally did. But it wasn't of polars
+but a smaller project. And serializing the perf.data files afterwards takes so
+long I didn't fancy a 1 hour plus wait to create a flamegraph of before the stupid 
+issue was fixed so you'll have to live with the after flamegraph.
+
+After:
+
+![Flamegraph](/assets/20250508/flamegraph_1.svg)
+
+You should be able to open this SVG in your browser, click on blocks and then have
+it zoom on that execution stack. You can use that to dig in and see what some of the
+really small spikey towers are. Before the trace was massively taken up by calls to
+`Vec<T>::remove`, which is why I tackled that first.
+
+## Why Not Cargo-Flamegraph?
+
 I also tried using [cargo-flamegraph](https://github.com/flamegraph-rs/flamegraph). 
 However, the flamegraph was mostly dominated by cargo and tarpaulin was only a tiny
-sliver so something was wrong there. But the command I used was:
+sliver so something was wrong there. But I've used `cargo-flamegraph` before successfully
+so if you want to see the command it was:
 
 ```
 flamegraph -- cargo tarpaulin --engine llvm --skip-clean
 ```
 
-Unfortunately, I lost the flamegraph I originally did. But it wasn't of polars
-but a smaller project. And serializing the perf.data files afterwards takes so
-long I didn't fancy a 1 hour plus wait to create a flamegraph before the stupid 
-issue was fixed so you'll have to live with the after flamegraph.
-
-After:
-
-![Flamegraph](/assets/202505XX/flamegraph_1.svg)
-
 # Still Slow?
+
+Well I cut a release and updated the issue and:
+
+> After updating to Tarpaulin 0.32.4, I see a performance boost of around ~25%,
+> which is already a good improvement. I tried creating a fresh project and adding
+> heavy dependencies to it (like polars-rs), but the performance is still quite fast.
+> So, I don't know how to provide a minimal example where this step takes too long to
+> execute.
 
 And looking at that new flamegraph we've got a lot of time spent in find. In
 fact it's the dominant time. This feels like something I can fix. Going back
@@ -302,13 +318,30 @@ And now the times for the outputs:
 
 ```
 real	2m24.562s
-user	1m26.994s
+user	1m25.707s
 sys	1m3.097s
 ```
 
 And the flamegraph:
 
-![Flamegraph](/assets/202505XX/flamegraph_2.svg)
+![Flamegraph](/assets/20250508/flamegraph_2.svg)
+
+# Some Thoughts
+
+Now, looking at these results I don't see much change. Which is disappointing,
+although the flamegraph is a lot different. Running the Criterion benchmarks
+for my profparser crate I do see a 80% speedup on top of the previous speedup.
+This indicates that either there's something a bit screwy with the benchmark
+for the data is respresentative of a different pattern to the polars code.
+
+The find scans across all the function records, and remove handles the coverage
+region expressions. There is some interplay between the amount of functions in
+your project and the complexity of the coverage regions of those functions. And where do
+most of the complex functions live? Near the start of the records list or the end?
+
+All these things could dramatically change how much impact these different speedups
+give different projects. I'm still waiting on a response back to see if the second
+speedup significantly improved things for that user. Hopefully, but time will tell.
 
 # More Speedup?
 
@@ -323,3 +356,14 @@ reading files.
 Now this can be thrown off by inaccuracies in sampling, and there is potentially
 room for some multi-threading to be applied smartly to speed up parsing of a mass
 of files. But it seems the low hanging fruit may have all been plucked.
+
+While, I can just _try things_, seeing around 96% speedups on one project but only
+25% on another with the same code being the bottleneck it feels like a more analytic
+approach is in order.
+
+The next steps are going to be to gather better insights of the shape of the data
+for different projects. So things like, the number of function records, the number
+of counters in those. The number of expressions and how many steps to resolve them.
+Start to analyse how each of these varies and how these variations impact performance.
+Part of this will also be creating a corpus of test projects where I can stress the 
+code in different ways. But that's a topic for a future post.
