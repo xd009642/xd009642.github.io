@@ -1,12 +1,12 @@
 This week I've dropped two [cargo-tarpaulin](https://github.com/xd009642/tarpaulin)
-releases both of which have significant speed-ups for llvm coverage reporting.
-When I say significant the first one gave me a ~80% speedup on a benchmark, and
-then the next one was a further 90% speedup. Meaning on this benchmark I achieved
+releases, both of which have significant speed-ups for LLVM coverage reporting.
+When I say significant, the first one gave me a ~80% speedup on a benchmark, and
+then the next one was a 90% speedup. Meaning on this benchmark I achieved
 overall a 98% speedup.
 
 Obviously, with getting speed-ups of this significance I was doing something
-really stupid, that's definitely true for the first speed-up. For the second
-one it wasn't so much idiocy as a missed opportunity. 
+really stupid, that's true for the first speed-up. For the second
+one, it wasn't so much idiocy as a missed opportunity. 
 
 But before that let's dive into some context! 
 
@@ -17,20 +17,20 @@ backends:
 
 1. ptrace - UNIX process tracing API, like a debugger. Not fully accurate
 but more flexible on where you can get coverage data
-2. LLVM instrumentation - runtime bundled into a binary which exports some
-data files. Fully accurate, some limitations of what coverage it can report
+2. LLVM instrumentation - runtime bundled into a binary which exports
+some files. Fully accurate, some limitations of what coverage it can report
 
-The LLVM coverage instrumentation is what was slow, so how doess that work?
+The LLVM coverage instrumentation was slow, so how does that work?
 
 1. You run your tests
 2. It spits out a profraw file
 3. **Typically** you use llvm-profdata (found in the llvm-tools rustup
-component) to turn profraw to profdata
+component) to turn a profraw file to a merged (profdata) file
 4. **Typically** you use llvm-cov (also in llvm-tools) to take the
 executable file and your profdata and make a report
 
-I say **typically** here because I always find it a bit annoying having to
-install multiple tools to use one, and when tools just go installing other
+I say **typically** here because I always find it annoying having to
+install multiple tools to use one, and when tools go installing other
 things. This doesn't matter as much in CI but in my own hubris I implemented 
 the profraw parsing and mapping [here](https://github.com/xd009642/llvm-profparser). 
 
@@ -43,12 +43,14 @@ fact tarpaulin can go 6 minutes plus on some projects just after printing out
 Of course, the best way to figure things out is benchmarking on realistic
 input data, and we really want something that will stress tarpaulin so prompted
 by a users comment on a GitHub issue I'll be comparing execution times using
-[polars](http://crates.io/crates/polars).
+[polars](http://crates.io/crates/polars). This isn't where the benchmark in the
+intro came from - that's just the criterion benchmarks in the repo. For development,
+I looked for a project that a user mentioned.
 
 After doing `cargo tarpaulin --engine llvm --no-run` to avoid measuring the cost
 of downloading dependencies and building the tests. This is the initial result:
 
-Then for testing I'll run:
+Then for testing, I'll run:
 
 ```sh
 time cargo tarpaulin --engine llvm --skip-clean
@@ -74,8 +76,8 @@ instrumentation profiling does seem to balloon the compilation time A LOT._
 
 # The Idiocy
 
-So first off lets isolate to the code that caused the issue. Then once we've
-discussed it I'll go a bit into how I figured this out and then using that
+So first off let's isolate the code that caused the issue. Then once we've
+discussed it I'll go a bit into how I figured this out and then use that
 technique again to find the next issue.
 
 ```rust
@@ -126,31 +128,31 @@ code then goes through a list of expressions that depend on other expressions
 and evaluates them, stores the result and then passes through until all the
 expressions are resolved.
 
-I remember roughly writing this code, and I remember my main concern was just
+I remember roughly writing this code, and I remember my main concern was
 figuring out how the expressions and coverage regions worked. And that's why I
 did the big dumb-dumb. And dear reader if you want to take a guess you have
 until the next paragraph to finish making it before I start revealing.
 
-The entire issue is `pending_exprs.remove(index);`. With this line I remove an
+The entire issue is `pending_exprs.remove(index);`. With this line, I remove an
 element from potentially the start of the vector, and then have to move every
 element back filling in the hole. These expressions are also used to work out
-condition coverage. So the more boolean subconditions you have and the more
-branches in your code the more you likely have in a function. I haven't
+condition coverage. So the more boolean sub-conditions you have and the more
+branches in your code the more expressions you have in a function. I haven't
 attempted to prove it, but I feel the number of regions should correlate with
 the cyclometric complexity of a function.
 
-That aside there's two "easy" solutions for this:
+That aside there are two "easy" solutions for this:
 
-1. Try to iterate through the list in reverse order so hopefully you can remove
+1. Try to iterate through the list in reverse order so hopefully, you can remove
 from the back and significantly reduce copies 
 2. Have a way to mark a vec element as done so you can skip it in the list and
 do no copies
 
-Intuitively, I feel that 1. has too much risk of still copying too much and
-causing a performance hit. So I went for 2. And to do this I just make the
+Intuitively, I feel that 1. has too much risk of copying too much and
+causing a performance hit. So I went for 2. To do this I make the
 pending expression type an `Option` and set it to `None` instead of removing it.
 
-After this the while statement looks like:
+After this, the while statement looks like this:
 
 ```rust
 let mut index = 0;
@@ -204,7 +206,7 @@ while pending_exprs.len() != cleared_expressions {
 }
 ```
 
-After this change the polars run is:
+After this change, the polars run is:
 
 ```
 real	2m24.941s
@@ -214,13 +216,13 @@ sys	1m2.708s
 
 # How to Find Bad Code (Flamegraphs)
 
-Now that parts all well and good, a massive win. Pat on the back and go home. 
+Now that part is all well and good, a massive win. Pat on the back and go home. 
 But how did I find where to fix my dumb mistake? The relevant part of the
 parsing code is probably only 500 lines or so. I guess I could have read it
 or sprinkled some print statements around. But this is serious work so I aim
 to be a smidgen scientific. And in enter flamegraphs.
 
-Just add the following to Tarpaulin's Cargo.tom so I can actually get
+Just add the following to Tarpaulin's Cargo.toml so I can get
 function names instead of addresses and install the local version:
 
 ```toml
@@ -230,7 +232,7 @@ debug = true
 
 Next up I want to run tarpaulin with `perf` to get a `perf.data` file. Perf is
 a sampling profiler so no instrumentation or changes to your binary - except
-for the debug symbols to make like easier. I also use
+for the debug symbols to make life easier. I also use
 [inferno](https://github.com/jonhoo/inferno) by Jon Gjengset to generate the
 flamegraphs:
 
@@ -244,17 +246,17 @@ probably want to look at anything Brendan Gregg has written [link](https://www.b
 Also Denis Bakhvalov's book is great [link](https://products.easyperf.net/perf-book-2).
 
 Unfortunately, I lost the flamegraph I originally did. But it wasn't of polars
-but a smaller project. And serializing the perf.data files afterwards takes so
-long I didn't fancy a 1 hour plus wait to create a flamegraph of before the stupid 
+but a smaller project. And serializing the perf.data files afterwards is so slow
+I didn't fancy a 1 hour plus wait to create a flamegraph of before the stupid 
 issue was fixed so you'll have to live with the after flamegraph.
 
 After:
 
 ![Flamegraph](/assets/20250508/flamegraph_1.svg)
 
-You should be able to open this SVG in your browser, click on blocks and then have
-it zoom on that execution stack. You can use that to dig in and see what some of the
-really small spikey towers are. Before the trace was massively taken up by calls to
+You should be able to open this SVG in your browser, and click on blocks to
+zoom in on that execution stack. You can use that to dig in and see what some of the
+really small thin towers are. Before the trace was massively taken up by calls to
 `Vec<T>::remove`, which is why I tackled that first.
 
 ## Why Not Cargo-Flamegraph?
@@ -278,9 +280,9 @@ Well I cut a release and updated the issue and:
 > So, I don't know how to provide a minimal example where this step takes too long to
 > execute.
 
-And looking at that new flamegraph we've got a lot of time spent in find. In
-fact it's the dominant time. This feels like something I can fix. Going back
-to the code I can see instantly where the find is:
+And looking at that new flamegraph we've got a lot of time spent in find. It's the new
+dominant time. This feels like something I can fix. Going back to the code, I can see
+instantly where the find is:
 
 ```
 let record = self.profile.records().iter().find(|x| {
@@ -293,9 +295,9 @@ like binary searching for the hashes. But there's something easier to do...
 
 ## Memoization
 
-For previous performance work some memoization was added for the profraw parsing, 
+For previous performance work, some memoization was added for the profraw parsing, 
 an `FxHashMap` going from the strings to the index in the records array. There's
-already a symbol table going from hashes to names so I can just look up the name
+already a symbol table going from hashes to names so I can look up the name
 then get the index from the name and get the exact record. This turns one find
 on a vec to two hashmap lookups and then the array access.
 
@@ -326,44 +328,48 @@ And the flamegraph:
 
 ![Flamegraph](/assets/20250508/flamegraph_2.svg)
 
+The fact you see other stages of the processing pipeline does show it's
+more balanced. But given how similar the times are, the first flamegraph might
+just be some sort of sampling weirdness...
+
 # Some Thoughts
 
 Now, looking at these results I don't see much change. Which is disappointing,
 although the flamegraph is a lot different. Running the Criterion benchmarks
-for my profparser crate I do see a 80% speedup on top of the previous speedup.
+for my profparser crate I do see an 80% speedup on top of the previous speedup.
 This indicates that either there's something a bit screwy with the benchmark
-for the data is respresentative of a different pattern to the polars code.
+for the data is respresentative of a different domain than the polars code.
 
 The find scans across all the function records, and remove handles the coverage
 region expressions. There is some interplay between the amount of functions in
 your project and the complexity of the coverage regions of those functions. And where do
 most of the complex functions live? Near the start of the records list or the end?
 
-All these things could dramatically change how much impact these different speedups
+All these things could dramatically change how much impact these different speed-ups
 give different projects. I'm still waiting on a response back to see if the second
-speedup significantly improved things for that user. Hopefully, but time will tell.
+speed-up significantly improved things for that user. Hopefully, but time will tell.
 
-# More Speedup?
+# More Speed-up?
 
 The LLVM profiling data does require (at least for polars), parsing around 1GB
 of data files. Then after parsing the extra ELF sections added expression
 evaluation and a lot of merging/resolution work. Looking at the profile I do
-see a lot of time spent reading files. From the sampling 51%n of the tarpaulin
+see a lot of time spent reading files. From the sampling 51% of the tarpaulin
 running time is handling the instrumentation runs - which will be parsing, merging
 and extracting relevant data from the profraws and binaries. But ~30% is just
 reading files.
 
 Now this can be thrown off by inaccuracies in sampling, and there is potentially
 room for some multi-threading to be applied smartly to speed up parsing of a mass
-of files. But it seems the low hanging fruit may have all been plucked.
+of files. But it seems the low-hanging fruit may have all been plucked.
 
-While, I can just _try things_, seeing around 96% speedups on one project but only
+While, I can _try things_, seeing around 96% speed-ups on one project but only
 25% on another with the same code being the bottleneck it feels like a more analytic
 approach is in order.
 
-The next steps are going to be to gather better insights of the shape of the data
-for different projects. So things like, the number of function records, the number
+The next steps will be to gather better insights into the shape of the data
+for different projects. So things like the number of function records, the number
 of counters in those. The number of expressions and how many steps to resolve them.
-Start to analyse how each of these varies and how these variations impact performance.
+Start to analyse how these vary and how these variations impact performance.
 Part of this will also be creating a corpus of test projects where I can stress the 
 code in different ways. But that's a topic for a future post.
