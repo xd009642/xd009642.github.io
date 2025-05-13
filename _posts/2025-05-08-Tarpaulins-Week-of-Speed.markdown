@@ -270,6 +270,12 @@ so if you want to see the command it was:
 flamegraph -- cargo tarpaulin --engine llvm --skip-clean
 ```
 
+I'm not sure why the cargo dominance, but I did during this have some faff in trying
+to stop it rebuilding the tests on the profiling runs. Skipping the build step was
+mainly so tarpaulin calling out to cargo didn't dominate the perf data and to keep
+the size down. Large perf data files take an age to collapse and render so for my
+own sanity I wanted to avoid that.
+
 # Still Slow?
 
 Well I cut a release and updated the issue and:
@@ -346,8 +352,12 @@ your project and the complexity of the coverage regions of those functions. And 
 most of the complex functions live? Near the start of the records list or the end?
 
 All these things could dramatically change how much impact these different speed-ups
-give different projects. I'm still waiting on a response back to see if the second
-speed-up significantly improved things for that user. Hopefully, but time will tell.
+give different projects. The user who raised the issue has also confirmed that
+this lead to a massive speedup for them so mission accomplished!
+
+The fact that this change lead to very little change in polars results but a big
+change in the users project does show that judging tradeoffs in this code can
+potentially be very tricky in future.
 
 # More Speed-up?
 
