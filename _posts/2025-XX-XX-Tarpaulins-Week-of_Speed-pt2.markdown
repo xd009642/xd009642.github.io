@@ -106,7 +106,7 @@ on:
 
 * [Polars](https://github.com/pola-rs/polars) (commit 5222107)
 * [tokio](https://github.com/tokio-rs/tokio) (commit 0cf95f0)
-* [datafusion (core)](https://github.com/apache/datafusion) (commit 3e30f77)
+* [datafusion-common](https://github.com/apache/datafusion) (commit 3e30f77)
 * [jiff](https://github.com/BurntSushi/jiff) (commit 08abead)
 * [ring](https://github.com/briansmith/ring) (commit a041a75)
 
@@ -136,7 +136,7 @@ Running datafusion-common with the command
 
 | Command | Mean [s] | Min [s] | Max [s] |
 |:---|---:|---:|---:|
-|  | 10.075 ± 0.069 | 9.942 | 10.155 |
+| datafusion-common before  | 10.075 ± 0.069 | 9.942 | 10.155 |
 
 Running jiff with `cargo tarpaulin --engine llvm --skip-clean --all-features`:
 
