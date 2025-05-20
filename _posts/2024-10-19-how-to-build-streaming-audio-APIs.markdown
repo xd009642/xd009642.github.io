@@ -4,7 +4,7 @@ APIs. You can find all the code [here](https://github.com/xd009642/streamer-temp
 It is a truth universally acknowledged, that a single developer in possession
 of a good audio processing model, must be in want of a streaming API. Maybe
 not universally acknowledged but it's definitely a common request at my place
-of work, both interally and externally.
+of work, both internally and externally.
 
 The existence of the ability to make some observation about audio often leads
 people to want to do this on a live audio stream. We can see this in live
