@@ -324,13 +324,14 @@ reads...
 
 Time for `BufReader` to hopefully save the day.
 
+Polars:
+
 | Command | Mean [s] | Min [s] | Max [s] |
 |:---|---:|---:|---:|
 | baseline | 155.460 ± 1.425 | 152.717 | 157.120 |
 | iteration order | 135.417 ± 3.720 | 129.325 | 139.286 |
 | file optimisation | 93.891 ± 1.646 | 90.838 | 96.526 |
-
-Oh wow another big win, time to see how it does in the other projects!
+| `BufReader` | 87.733 ± 0.300 | 87.114 | 88.072 |
 
 Datafusion-common:
 
@@ -339,6 +340,7 @@ Datafusion-common:
 | baseline | 10.075 ± 0.069 | 9.942 | 10.155 |
 | iteration order | 9.527 ± 0.092 | 9.407 | 9.669 | 
 | file optimisation | 9.300 ± 0.154 | 8.988 | 9.491 |
+| `BufReader` | 9.160 ± 0.065 | 9.055 | 9.231 |
 
 Jiff:
 
@@ -347,6 +349,7 @@ Jiff:
 | baseline  | 3.241 ± 0.011 | 3.218 | 3.260 | 
 | iteration order | 3.063 ± 0.064 | 2.892 | 3.119 | 
 | file optimisation | 3.153 ± 0.021 | 3.112 | 3.178 |  
+| `BufReader` | 3.118 ± 0.015 | 3.093 | 3.139 | 
 
 Ring: 
 
@@ -355,6 +358,7 @@ Ring:
 | baseline | 77.923 ± 0.954 | 77.394 | 80.529 | 
 | iteration order | 76.485 ± 0.124 | 76.211 | 76.671 |
 | file optimisation | 77.825 ± 0.943 | 77.140 | 80.136 |
+| `BufReader` | 77.324 ± 0.108 | 77.213 | 77.505 | 
 
 Tokio: 
 
@@ -363,9 +367,108 @@ Tokio:
 | baseline  | 68.236 ± 0.563 | 67.080 | 68.992 | 
 | iteration order | 59.273 ± 0.477 | 58.751 | 60.484 |
 | file optimisation | 60.592 ± 0.800 | 59.998 | 62.790 |
+| `BufReader` | 57.703 ± 0.396 | 56.901 | 58.145 |
 
-<LTO BASED OPTIMISATION>
+Okay this looks better again. I could play around with
+[memmap](https://crates.io/crates/memmap), but it's not a safe OS level API
+and I don't think this is worth adding unsafe into things for.
 
-<RESULTS ON OTHER PROJECTS>
+Let's also take a look at the flamegraph just to see how things have been shaken up
 
-<CONCLUSION>
+![Flamegraph](/assets/20250519/post_file_io_flamegraph.png)
+
+Here I actually highlighted the `CoverageMapping::new` call because whereas before
+it took up most of the time, now it's so small you can't read the symbol name
+without expanding on the block. I imagine for projects that generate a lot of
+very large test binaries this change likely impacts the most. This also includes
+high LoC counts in the crate plus used dependency code as that will increase the
+symbol table and count metadata in the ELF sections (and other object files of
+your own choosing).
+
+# Final Change Today
+
+Okay, we've done a lot of changes with not a lot of diffs to the project and
+gotten some big changes in performance. Now there's one more thing I'd like to
+try out from [this issue](https://github.com/xd009642/tarpaulin/issues/1738).
+
+```toml
+[profile.release]
+codegen-units = 1
+lto = true
+```
+
+Link-Time Optimisation (LTO) is a technique that applies optimisations at the
+link stage taking into account all the crates being linked in and not just 
+optimising crates individually. It should decrease the binary size and hopefully
+up the performance as the issue states. Let's try it out:
+
+# LTO Results
+
+Polars:
+
+| Command | Mean [s] | Min [s] | Max [s] |
+|:---|---:|---:|---:|
+| baseline | 155.460 ± 1.425 | 152.717 | 157.120 |
+| iteration order | 135.417 ± 3.720 | 129.325 | 139.286 |
+| file optimisation | 93.891 ± 1.646 | 90.838 | 96.526 |
+| `BufReader` | 87.733 ± 0.300 | 87.114 | 88.072 |
+| LTO | 85.787 ± 1.350 | 82.055 | 87.070 |
+
+Datafusion-common:
+
+| Command | Mean [s] | Min [s] | Max [s] |
+|:---|---:|---:|---:|
+| baseline | 10.075 ± 0.069 | 9.942 | 10.155 |
+| iteration order | 9.527 ± 0.092 | 9.407 | 9.669 | 
+| file optimisation | 9.300 ± 0.154 | 8.988 | 9.491 |
+| `BufReader` | 9.160 ± 0.065 | 9.055 | 9.231 |
+| LTO | 8.944 ± 0.058 | 8.848 | 9.020 |
+
+Jiff:
+
+| Command | Mean [s] | Min [s] | Max [s] |
+|:---|---:|---:|---:|
+| baseline  | 3.241 ± 0.011 | 3.218 | 3.260 | 
+| iteration order | 3.063 ± 0.064 | 2.892 | 3.119 | 
+| file optimisation | 3.153 ± 0.021 | 3.112 | 3.178 |  
+| `BufReader` | 3.118 ± 0.015 | 3.093 | 3.139 | 
+| LTO | 3.065 ± 0.027 | 3.033 | 3.109 |
+
+Ring: 
+
+| Command | Mean [s] | Min [s] | Max [s] |
+|:---|---:|---:|---:|
+| baseline | 77.923 ± 0.954 | 77.394 | 80.529 | 
+| iteration order | 76.485 ± 0.124 | 76.211 | 76.671 |
+| file optimisation | 77.825 ± 0.943 | 77.140 | 80.136 |
+| `BufReader` | 77.324 ± 0.108 | 77.213 | 77.505 | 
+| LTO | 77.296 ± 0.129 | 77.143 | 77.518 |
+
+Tokio: 
+
+| Command | Mean [s] | Min [s] | Max [s] | 
+|:---|---:|---:|---:|
+| baseline  | 68.236 ± 0.563 | 67.080 | 68.992 | 
+| iteration order | 59.273 ± 0.477 | 58.751 | 60.484 |
+| file optimisation | 60.592 ± 0.800 | 59.998 | 62.790 |
+| `BufReader` | 57.703 ± 0.396 | 56.901 | 58.145 |
+| LTO | 56.987 ± 0.438 | 56.427 | 57.963 |
+
+# Conclusion
+
+Well time for the takeaways. I guess generally, people should use samply over
+perf if it works out of the box. That is if you're not using any perf features
+that aren't supported (if there are any). Doing multiple runs and statistics are
+nice. Buffering file IO and reading the least amount of data possible does have
+knock on effects. Preallocate storage when possible and sometimes iteration order
+matters a lot. Benchmark on a variety of real life workloads as well.
+
+There's not some big magic takeaway here. Performance work is often just trying
+to get better measurements to judge your changes. Then when you have them trying 
+to reduce allocations, instructions executed and data read/written.
+
+Being methodical helps, noting down your results and keeping raw data around for
+analysis is also very helpful.
+
+Now all this is done I should set about the process of releasing it all to the
+general public. Laters!
