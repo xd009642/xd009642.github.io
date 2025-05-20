@@ -129,37 +129,37 @@ Running polars with the command `cargo tarpaulin --engine llvm --skip-clean`:
 
 | Command | Mean [s] | Min [s] | Max [s] |
 |:---|---:|---:|---:|
-| polars before  | 155.460 ± 1.425 | 152.717 | 157.120 |
-| polars after | 135.417 ± 3.720 | 129.325 | 139.286 |
+| baseline  | 155.460 ± 1.425 | 152.717 | 157.120 |
+| iteration order | 135.417 ± 3.720 | 129.325 | 139.286 |
 
 Running datafusion-common with the command
 `cargo tarpaulin --engine llvm --skip-clean  -p datafusion-common`:
 
 | Command | Mean [s] | Min [s] | Max [s] |
 |:---|---:|---:|---:|
-| datafusion-common before  | 10.075 ± 0.069 | 9.942 | 10.155 |
-| datafusion-common after | 9.527 ± 0.092 | 9.407 | 9.669 | 
+| baseline | 10.075 ± 0.069 | 9.942 | 10.155 |
+| iteration order | 9.527 ± 0.092 | 9.407 | 9.669 | 
 
 Running jiff with `cargo tarpaulin --engine llvm --skip-clean --all-features`:
 
 | Command | Mean [s] | Min [s] | Max [s] |
 |:---|---:|---:|---:|
-| jiff before  | 3.241 ± 0.011 | 3.218 | 3.260 | 
-| jiff after | 3.063 ± 0.064 | 2.892 | 3.119 | 
+| baseline  | 3.241 ± 0.011 | 3.218 | 3.260 | 
+| iteration order | 3.063 ± 0.064 | 2.892 | 3.119 | 
 
 Running ring with `cargo tarpaulin --engine llvm --skip-clean --all-features --release`:
 
 | Command | Mean [s] | Min [s] | Max [s] |
 |:---|---:|---:|---:|
-| ring before  | 77.923 ± 0.954 | 77.394 | 80.529 | 
-| ring after | 76.485 ± 0.124 | 76.211 | 76.671 |
+| baseline  | 77.923 ± 0.954 | 77.394 | 80.529 | 
+| iteration order | 76.485 ± 0.124 | 76.211 | 76.671 |
 
 Running tokio with `cargo tarpaulin --engine llvm --skip-clean --all-features`:
 
 | Command | Mean [s] | Min [s] | Max [s] | 
 |:---|---:|---:|---:|
-| tokio after  | 68.236 ± 0.563 | 67.080 | 68.992 | 
-| tokio before | 59.273 ± 0.477 | 58.751 | 60.484 |
+| baseline  | 68.236 ± 0.563 | 67.080 | 68.992 | 
+| iteration order | 59.273 ± 0.477 | 58.751 | 60.484 |
 
 This improvement ranges from 2% to 14% faster than the previous version.
 Moreover, the coverage never changed so we can be pretty sure this doesn't
