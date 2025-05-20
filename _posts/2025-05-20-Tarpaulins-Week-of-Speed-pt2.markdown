@@ -6,7 +6,7 @@ different tools than `perf` and `cargo flamegraph`!
 
 # New Tools!
 
-Firstly, now polars doesn't take 40 minutes for a tarpaulin run I'll
+Firstly, now that polars doesn't take 40 minutes for a tarpaulin run, I'll
 be using [hyperfine](https://github.com/sharkdp/hyperfine) to get some
 statistics on the tarpaulin runs.
 
@@ -39,18 +39,20 @@ Now this code does go over the region expressions and generate count values and
 add to a list of pending expressions. You can see the full function at this point
 in time [here](https://github.com/xd009642/llvm-profparser/blob/54a2dcfff0e6103b21464f37cea1597125db9e2d/src/coverage/coverage_mapping.rs#L150-L276). But it's long so I won't paste it all in but instead explain a bit.
 
-There is a map of region IDs to counts, as we go over the expression list we
+There is a map of region IDs to counts and as we go over the expression list, we
 get elements from the initial version and update values as we resolve expressions.
 The `HashMap::get` calls happen in loops as we go over the expression tree.
 
 Initially, we do one pass through to build up the pending expressions and then
-loop over pending list until we finish it. If we can reduce the number of times
-we loop over things we can speed stuff up.
+loop over the pending list until we finish it. Reducing the number of times
+we loop over things should speed things up.
 
-One thing I noticed before is that the expressions are a tree with the deeper
-nodes being later in the list. This means potentially, we can go over the list
-less times if we initially iterate it in reverse. Grabbing the deeper nodes firsts
-should mean the nodes above them get resolved more easily.
+
+I noticed previously that the pending expressions are represented by a flattened
+tree, which means the deeper nodes are located at indices further into the list.
+This means that, potentially, we can iterate over the list fewer times if we
+iterate over it in reverse first. Processing those deeper nodes first will mean
+that the nodes above them in the tree structure will get resolved quicker.
 
 With that in mind I did the following diff:
 
@@ -94,10 +96,10 @@ let (hash, name_hash) = if symtab.contains(data.name_ref) {
 ```
 
 That can just be a `if name.is_some()` and avoid another `HashMap` lookup.
-When I compared this parsing code to llvm my initial implementation was significantly
-faster. With the difficulties in the coverage mapping part of the code and then it's
-performance issues I didn't really go back and see if I could speed up the profraw
-parsing anymore. But this should be an easy win.
+When I compared this parsing code to llvm, my initial implementation was significantly
+faster. With the difficulties in the coverage mapping part of the code and then its
+performance issues, I didn't really go back and see if I could speed up the profraw
+parsing anymore, but this should be an easy win.
 
 # Benchmarking Results #1
 
