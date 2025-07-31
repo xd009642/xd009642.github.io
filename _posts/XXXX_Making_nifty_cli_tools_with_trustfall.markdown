@@ -291,4 +291,103 @@ from the vertex and running our defined queries. First, let's get the data out.
 That way we can run simple queries with no filtering like print every docker
 image.
 
+The starting point that `trustfall_stubgen` gives us is as follows:
+
+```rust
+use trustfall::{FieldValue, provider::{AsVertex, ContextIterator, ContextOutcomeIterator, ResolveInfo}};
+
+use super::vertex::Vertex;
+
+pub(super) fn resolve_image_property<'a, V: AsVertex<Vertex> + 'a>(
+    contexts: ContextIterator<'a, V>,
+    property_name: &str,
+    _resolve_info: &ResolveInfo,
+) -> ContextOutcomeIterator<'a, V, FieldValue> {
+    match property_name {
+        "created" => {
+            todo!("implement property 'created' in fn `resolve_image_property()`")
+        }
+        "repo" => todo!("implement property 'repo' in fn `resolve_image_property()`"),
+        "size" => todo!("implement property 'size' in fn `resolve_image_property()`"),
+        "tag" => todo!("implement property 'tag' in fn `resolve_image_property()`"),
+        _ => {
+            unreachable!(
+                "attempted to read unexpected property '{property_name}' on type 'Image'"
+            )
+        }
+    }
+}
+```
+
+Here we have a `ContextIterator` and we want to transform that into a
+`ContextOutcomeIterator`. These type aliases with some simplification
+look as follows:
+
+```rust
+pub type ContextIterator<VertexT> = Box<dyn Iterator<Item = DataContext<VertexT>>>;
+pub type ContextOutcomeIterator<VertexT, OutcomeT> = Box<dyn Iterator<Item = (DataContext<VertexT>, OutcomeT)>>;
+```
+
+The contexts are what we want to resolve, so for eaech property name I'll create a
+mapping from that context and property to the same context paired with the value of
+that property. I believe this all came together from looking at some example
+trustfall adapter implementations from Predrag's blog and talks but it was a while
+ago so I can't trace back to exactly how I learned this.
+
+Just implementing this for the `created` property looks as follows:
+
+```
+pub(super) fn resolve_image_property<'a, V: AsVertex<Vertex> + 'a>(
+    contexts: ContextIterator<'a, V>,
+    property_name: &str,
+    _resolve_info: &ResolveInfo,
+) -> ContextOutcomeIterator<'a, V, FieldValue> {
+    let func = match property_name {
+        "created" => |v: DataContext<V>| match v.active_vertex() {
+            Some(Vertex::Image(img)) => (
+                v.clone(),
+                FieldValue::String(Arc::from(img.created_at.to_string().as_str())),
+            ),
+            None => (v, FieldValue::Null),
+        },
+        "repo" => todo!("implement property 'repo' in fn `resolve_image_property()`"),
+        "size" => todo!("implement property 'size' in fn `resolve_image_property()`"),
+        "tag" => todo!("implement property 'tag' in fn `resolve_image_property()`"),
+        _ => {
+            unreachable!(
+                "attempted to read unexpected property '{property_name}' on type 'Image'"
+            )
+        }
+    };
+    Box::new(contexts.map(func))
+}
+```
+
+Here I have to convert my `jiff::Timestamp` to a string and then wrap it in a `FieldValue`,
+for types with no conversion this is a bit simpler. But generally speaking this is reasonably
+straightforward. Get the active vertex (of which we only have one potential type), extract the
+property and return it.
+
 ## Writing Your Edges.rs
+
+Last is edges, here we have the most generated code and we implement the queries in our 
+schemas. If you scroll right down to the bottom you'll see a function for each query like:
+
+```rust
+pub(super) fn created_after<'a, V: AsVertex<Vertex> + 'a>(
+    contexts: ContextIterator<'a, V>,
+    timestamp: &str,
+    _resolve_info: &ResolveEdgeInfo,
+) -> ContextOutcomeIterator<'a, V, VertexIterator<'a, Vertex>> {
+    resolve_neighbors_with(
+        contexts,
+        move |vertex| {
+            let vertex = vertex
+                .as_image()
+                .expect("conversion failed, vertex was not a Image");
+            todo!("get neighbors along edge 'created_after' for type 'Image'")
+        },
+    )
+}
+```
+
