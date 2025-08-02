@@ -14,6 +14,10 @@ to not mention there's already a nifty CLI tool using Trustfall and that's
 [cargo-semver-checks](https://github.com/obi1kenobi/cargo-semver-checks). If you
 haven't seen it before check it out it's very useful.
 
+If you want to skip ahead here's
+[the link](https://github.com/xd009642/docker-cleanup) for the project I'm
+talking about in this post.
+
 # The Tool
 
 Docker. It bloats up my storage, I have tons of images as part of work with
@@ -391,3 +395,138 @@ pub(super) fn created_after<'a, V: AsVertex<Vertex> + 'a>(
 }
 ```
 
+The steps here are once again not too hard, we have our vertex already
+extracted for us. We just need to see if it matches the query and return it
+in an iterator if it does.
+
+Here we get our timestamp once again in a string so we need to do the
+conversion. Also, because I want to return that vertex I've removed
+the name shadowing. But below is the code:
+
+```rust
+pub(super) fn created_after<'a, V: AsVertex<Vertex> + 'a>(
+    contexts: ContextIterator<'a, V>,
+    timestamp: &str,
+    _resolve_info: &ResolveEdgeInfo,
+) -> ContextOutcomeIterator<'a, V, VertexIterator<'a, Vertex>> {
+    let ts = timestamp.parse::<Timestamp>().unwrap();
+
+    resolve_neighbors_with(contexts, move |vertex| {
+        let image = vertex
+            .as_image()
+            .expect("conversion failed, vertex was not a Image");
+
+        if image.created_at > ts {
+            Box::new(std::iter::once(vertex.clone()))
+        } else {
+            Box::new(std::iter::empty())
+        }
+    })
+}
+``` 
+
+Repeat something like this for all the queries and then we have a working
+Trustfall adapter!
+
+# Using the Adapter
+
+Using this adapter if I wanted to get all the docker images created in June
+this year I could use the following query:
+
+```graphql
+{
+  Image {
+    created_after(timestamp: "2025-06-01 00:00:00+00") 
+    created_before(timestamp: "2025-07-01 00:00:00+00") 
+    repo @output
+    tag @output
+    size @output
+    created @output
+  }
+}
+````
+
+If I want to then execute that query it looks like so (the query is in the
+variable `query` for brevity):
+
+```rust
+use adapter::*;
+use trustfall::{FieldValue, execute_query};
+use std::{collections::BTreeMap, sync::Arc};
+
+let adapter = Arc::new(Adapter::new());
+let args: BTreeMap<Arc<str>, FieldValue> = BTreeMap::new();
+
+let vertices = execute_query(Adapter::schema(), adapter, query, args).unwrap();
+```
+
+The vertices is an iterator over `BTreeMap<Arc<str>, FieldValue>`. Each
+`BTreeMap` will contain the repo, tag, size and created date of a docker image.
+
+Now for a CLI each CLI argument will map to at least one query, and you can
+iteratively build up a Trustfall query going over the CLI args. Currently, 
+Trustfall is "QraphQL-like" in that it doesn't support everything in GraphQL.
+This means features like query arguments aren't yet supported and you should
+place the values straight in the constructed query string.
+
+My query string construction is a fair amount of code, but not very nested
+and more repetitive. Here's a snippet of it to see how I use it:
+
+```
+let mut query_str = "{Image{".to_string();
+
+if let Some(created_before) = filter.created_before {
+    query_str.push_str(&format!(
+        "created_before(timestamp: \"{}\")\n",
+        created_before
+    ));
+}
+
+// SNIP
+
+if let Some(contains) = &filter.name {
+    query_str.push_str(&format!("has_name(name:\"{}\")\n", contains));
+}
+
+query_str.push_str("repo @output\ntag @output\nsize @output\ncreated @output\n");
+// Mainly for ease of readability
+query_str.push_str("}}");
+```
+
+Then once I have the list of vertices I can map it to a printout, run docker
+commands on them. Anything I desire! The main part here is just using the
+queried data and creating a nice CLI interface to interact with it. And that's
+the meat of it. How I went about using Trustfall to make a nifty little CLI
+tool for myself.
+
+# Small Bonus UX
+
+Before I go, on the theme of nice CLI interface, I'm using the [human-size](https://crates.io/crates/human-size) crate
+for working with sizes like `2GB` etc. Because of this all my size based
+arguments accept either the number of bytes or a human size. For the snippet
+I'll put below I can enter `--smaller-than 2000000000` or `--smaller-than 2GB`
+which I was very happy with.
+
+```rust
+/// Common filter options for all commands
+#[derive(clap::Parser, Debug)]
+pub struct FilterOptions {
+    /// Only include files smaller than this size in bytes
+    #[arg(long, value_parser = parse_human_size)]
+    pub smaller_than: Option<usize>,
+}
+
+fn parse_human_size(input: &str) -> Result<usize, String> {
+    match human_size::Size::from_str(input) {
+        Ok(size) => Ok(size.to_bytes() as usize),
+        Err(_) => input
+            .parse::<usize>()
+            .map_err(|e| format!("Invalid size '{}': {}", input, e)),
+    }
+}
+```
+
+And that's it, peruse [the code](https://github.com/xd009642/docker-cleanup)
+if you want to see more of how it came together. This was just a weekend
+project so I'll likely refine the interface a bit more as I use it more but
+for now it's already useful for me.
