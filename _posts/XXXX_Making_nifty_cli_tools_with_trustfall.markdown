@@ -350,7 +350,7 @@ pub(super) fn resolve_image_property<'a, V: AsVertex<Vertex> + 'a>(
         "created" => |v: DataContext<V>| match v.active_vertex() {
             Some(Vertex::Image(img)) => (
                 v.clone(),
-                FieldValue::String(Arc::from(img.created_at.to_string().as_str())),
+                img.created_at.to_string().to_string(),
             ),
             None => (v, FieldValue::Null),
         },
@@ -367,10 +367,10 @@ pub(super) fn resolve_image_property<'a, V: AsVertex<Vertex> + 'a>(
 }
 ```
 
-Here I have to convert my `jiff::Timestamp` to a string and then wrap it in a `FieldValue`,
-for types with no conversion this is a bit simpler. But generally speaking this is reasonably
-straightforward. Get the active vertex (of which we only have one potential type), extract the
-property and return it.
+Here I have to convert my `jiff::Timestamp` to a string and then use the `Into` to turn it into
+a `FieldValue`, for types with no conversion this is a bit simpler. But generally speaking this
+is reasonably straightforward. Get the active vertex (of which we only have one potential type),
+extract the property and return it.
 
 ## Writing Your Edges.rs
 
@@ -441,7 +441,7 @@ this year I could use the following query:
     repo @output
     tag @output
     size @output
-    created @output
+created @output
   }
 }
 ````
@@ -495,11 +495,9 @@ query_str.push_str("}}");
 
 Then once I have the list of vertices I can map it to a printout, run docker
 commands on them. Anything I desire! The main part here is just using the
-queried data and creating a nice CLI interface to interact with it. And that's
-the meat of it. How I went about using Trustfall to make a nifty little CLI
-tool for myself.
+queried data and creating a nice CLI interface to interact with it.
 
-# Small Bonus UX
+## Small Bonus UX
 
 Before I go, on the theme of nice CLI interface, I'm using the [human-size](https://crates.io/crates/human-size) crate
 for working with sizes like `2GB` etc. Because of this all my size based
@@ -530,3 +528,85 @@ And that's it, peruse [the code](https://github.com/xd009642/docker-cleanup)
 if you want to see more of how it came together. This was just a weekend
 project so I'll likely refine the interface a bit more as I use it more but
 for now it's already useful for me.
+
+# But Wait
+
+Fairly content with myself I wrote up the above and sent it around a bit
+for feedback. And Predrag dropped a bit of a surprise, most of my queries
+can just be `@filter` clauses.
+
+Huh, I never knew they existed. Looking it up `@filter` isn't part of GraphQL
+but is apparently common in some things built on top of GraphQL. Currently,
+if you want to see what a filter can do you can check the ops here:
+[docs.rs](https://docs.rs/trustfall_core/latest/trustfall_core/ir/enum.Operation.html).
+Then couple that with looking up some of the example queries to see how
+to use them, there's a Trustfall playground and you can see some queries there.
+
+Removing our edge queries and adding filter directives we'd change the following:
+
+```graphql
+{
+  Image{
+    name_matches(substring: "$name_regex")
+    size_in_range(min: $larger_than, max: &smaller_than
+    name @output
+    size @output
+    created @output
+  }
+}
+
+```
+
+Into this:
+
+```graphql
+{
+  Image{
+    name @output
+      @filter(op: "regex", value: ["$name_regex"])
+    size @output
+      @filter(op: "<", value: ["$smaller_than"])
+      @filter(op: ">", value: ["$larger_than"])
+    created @output
+  }
+}
+```
+
+There is some difference in how we call this with `trustfall::execute_query` as
+well. With the first one we need to replace the arguments in the query string,
+whereas in the second we need to use the `args` argument to supply our named
+arguments.
+
+Now comes the time to rework things and see how much code can be deleted. But first 
+this will be my new Trustfall schema with unnecessary edge queries removed:
+
+```graphql
+schema {
+  query: Query
+}
+
+type Query {
+  Image: [Image!]!
+}
+
+type Image {
+  name: String,
+  repo: String,
+  tag: String,
+  size: Int!,
+  created: String!
+
+  # Filtering via edges (with parameters)
+  created_after(timestamp: String!): [Image!]!
+  created_before(timestamp: String!): [Image!]!
+}
+```
+
+I've added a name field which will be the string `{repo}:{tag}`, for convenience.
+
+
+Okay, not as many lines removed as I would have thought but not too shabby.
+
+```
+6 files changed, 55 insertions(+), 148 deletions(-)
+```
