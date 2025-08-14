@@ -604,6 +604,31 @@ type Image {
 
 I've added a name field which will be the string `{repo}:{tag}`, for convenience.
 
+```rust
+let mut query_args: BTreeMap<Arc<str>, trustfall::FieldValue> = BTreeMap::new();
+let mut query_str = "{Image{".to_string();
+
+// SNIP
+
+let mut size_filter = String::new();
+let mut name_filter = String::new();
+
+if let Some(contains) = &filter.name {
+    name_filter.push_str(r#"@filter(op: "=", value: ["$name_eq"])"#);
+    name_filter.push('\n');
+    query_args.insert(Arc::from("name_eq".to_string()), contains.into());
+}
+
+query_str.push_str(&format!(
+    "name @output\n{name_filter}size @output\n{size_filter}created @output\n"
+));
+
+query_str.push_str("}}");
+let adapter = Arc::new(Adapter::new());
+
+let vertices = execute_query(Adapter::schema(), adapter, &query_str, query_args).unwrap();
+```
+
 
 Okay, not as many lines removed as I would have thought but not too shabby.
 
