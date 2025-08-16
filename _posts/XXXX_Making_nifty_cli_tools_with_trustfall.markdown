@@ -575,7 +575,8 @@ Into this:
 There is some difference in how we call this with `trustfall::execute_query` as
 well. With the first one we need to replace the arguments in the query string,
 whereas in the second we need to use the `args` argument to supply our named
-arguments.
+arguments. Filter operations in Trustfall won't work with literals preventing us from
+placing the values in on query generation.
 
 Now comes the time to rework things and see how much code can be deleted. But first 
 this will be my new Trustfall schema with unnecessary edge queries removed:
@@ -630,8 +631,23 @@ let vertices = execute_query(Adapter::schema(), adapter, &query_str, query_args)
 ```
 
 
-Okay, not as many lines removed as I would have thought but not too shabby.
+How many lines were deleted, time to see what the commit says: 
 
 ```
 6 files changed, 55 insertions(+), 148 deletions(-)
 ```
+
+Not as many lines removed as I would have thought before starting but the need
+to build up the args map added some extra lines.
+
+# Conclusion
+
+I'll be refining the interface of this tool to become more useful for my own
+needs. However, I don't plan on publishing it or it getting usage from other people.
+The main hope is that this introduces some people to Trustfall and how they can
+start to utilise it as a query engine for their own data. 
+
+Going forward, I'm also going to work more on the Trustfall official documentation, 
+some of which I've already started doing. If this has been of interest and you want
+to learn more check out [Predrag's site](https://predr.ag/) for more talks/blogposts
+and other things.
