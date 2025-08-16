@@ -340,7 +340,7 @@ ago so I can't trace back to exactly how I learned this.
 
 Just implementing this for the `created` property looks as follows:
 
-```
+```rust
 pub(super) fn resolve_image_property<'a, V: AsVertex<Vertex> + 'a>(
     contexts: ContextIterator<'a, V>,
     property_name: &str,
@@ -472,7 +472,7 @@ place the values straight in the constructed query string.
 My query string construction is a fair amount of code, but not very nested
 and more repetitive. Here's a snippet of it to see how I use it:
 
-```
+```rust
 let mut query_str = "{Image{".to_string();
 
 if let Some(created_before) = filter.created_before {
