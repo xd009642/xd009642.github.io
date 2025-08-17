@@ -332,7 +332,7 @@ pub type ContextIterator<VertexT> = Box<dyn Iterator<Item = DataContext<VertexT>
 pub type ContextOutcomeIterator<VertexT, OutcomeT> = Box<dyn Iterator<Item = (DataContext<VertexT>, OutcomeT)>>;
 ```
 
-The contexts are what we want to resolve, so for eaech property name I'll create a
+The contexts are what we want to resolve, so for each property name I'll create a
 mapping from that context and property to the same context paired with the value of
 that property. I believe this all came together from looking at some example
 trustfall adapter implementations from Predrag's blog and talks but it was a while
@@ -465,7 +465,7 @@ The vertices is an iterator over `BTreeMap<Arc<str>, FieldValue>`. Each
 
 Now for a CLI each CLI argument will map to at least one query, and you can
 iteratively build up a Trustfall query going over the CLI args. Currently, 
-Trustfall is "QraphQL-like" in that it doesn't support everything in GraphQL.
+Trustfall is "GraphQL-like" in that it doesn't support everything in GraphQL.
 This means features like query arguments aren't yet supported and you should
 place the values straight in the constructed query string.
 
