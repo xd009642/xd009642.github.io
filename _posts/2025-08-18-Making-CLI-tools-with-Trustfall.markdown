@@ -391,9 +391,9 @@ is reasonably straightforward. Get the active vertex (of which we only have one 
 extract the property and return it.
 
 One important thing to note, cloning `v` is easy and what I initially did.
-However, it's not necessary and often you can avoid an expensive clone by binding
-the second element of the tuple to a new variable so the compiler doesn't try
-and take a reference to a temporary value.
+However, it's not necessary and often you can avoid a potentially expensive clone
+by binding the second element of the tuple to a new variable so the compiler
+doesn't try and take a reference to a temporary value.
 
 ## Writing Your Edges.rs
 
