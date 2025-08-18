@@ -53,7 +53,7 @@ $ docker image ls --format=json
 Looking at this data, and thinking about what I want to do I can end
 up with some queries:
 
-1. Finding docker images withing a size range (min, max optional)
+1. Finding docker images within a size range (min, max optional)
 2. Docker images older or younger than some date
 3. Ones with an exact name match (not using tag)
 4. Ones with a name that matches a regex
@@ -81,7 +81,7 @@ type Image {
   created: String!
 
   # Filtering via edges (with parameters)
-  size_in_range(min: Int!, max: Int!): [Image!]!
+  size_in_range(min: Int, max: Int): [Image!]!
   created_after(timestamp: String!): [Image!]!
   created_before(timestamp: String!): [Image!]!
   has_name(name: String!): [Image!]!
@@ -283,9 +283,14 @@ of `VertexIterator` which is a `Box<dyn Iterator<Item = VertexT> + 'vertex>`.
 
 As a side, you can also just remove this file. And instead in `adapter_impl.rs`
 have the type which the `trustfall::provider::Adapter` is implemented for
-generate your `Vertex`. This might be easier than getting data into the `ResolveInfo`
-type to resolve to different sources - I'm not sure. For this project I have one
-source and that's the docker images on my machine, there's no fancy configuration.
+generate your `Vertex`. That approach might be desirable if the type that
+implements `Adapter` has a number of member variables you want to use when
+generating the vertices. Also, don't worry about `ResolveInfo`, it's for
+optimisation purposes and more complicated. 
+
+For this project I have one source and that's the docker images on my machine. 
+The fact there's no fancy configuration means I can keep things simple and stick
+to the generated structure.
 
 ## Writing Your properties.rs
 
@@ -650,4 +655,6 @@ start to utilise it as a query engine for their own data.
 Going forward, I'm also going to work more on the Trustfall official documentation, 
 some of which I've already started doing. If this has been of interest and you want
 to learn more check out [Predrag's site](https://predr.ag/) for more talks/blogposts
-and other things.
+and other things. Also, a big thanks to Predrag for taking the time to talk to
+me about Trustfall and answer some of my questions plus provide feedback on this
+post.
