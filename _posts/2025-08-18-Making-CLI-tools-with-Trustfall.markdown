@@ -4,9 +4,9 @@ is a pretty cool tool. From the repo about section it says:
 > A query engine for any combination of data sources. Query your files and APIs
 > as if they were databases!
 
-And this is pretty powerful as a tool, and I've read blogposts - mostly
-by Predrag (blog [here](https://predr.ag/blog/)), I've seen a talk or two. And
-after this I've been looking for a place to play with Trustfall.
+And this is pretty powerful as a concept, and I've read blogposts - mostly
+by Predrag (blog [here](https://predr.ag/blog/)), I've seen a talk or two.
+And as a result, I've been looking for a place to play with Trustfall.
 
 Well, I've finally done it and here's my writeup of the general experience and
 how to use Trustfall yourself. But before I get into that it would be remiss
@@ -22,13 +22,13 @@ talking about in this post.
 
 Docker. It bloats up my storage, I have tons of images as part of work with
 dev builds and for some projects they're around 7GB an image. It's not great.
-And I've been suffering, bash functions to grep all the images and remove
+And I've been suffering writing bash functions to grep all the images and remove
 ones with a certain substring in the name, attempts to delete anything over a
 size. It ends up fiddly and a bit annoying.
 
 But each image has a bunch of data associated with it, it seems reasonable to
 query it and print information or delete images that match a query. Looks like
-I've got a reason to use trustfall.
+I've got a reason to use Trustfall.
 
 _Side note I do also use podman on some machines, this will be relevant later._
 
@@ -43,17 +43,30 @@ relational model. To help create this schema it can be helpful to think of
 the queries that we want to represent.
 
 Using the following CLI command I get can get a list of all the docker images
-on my machine in an easy to parse format:
+on my machine in an easy to parse format. This is newline delimited json so
+for ease of reading I'll show one of the lines in formatted json!
 
 ```
 $ docker image ls --format=json
-{"Containers":"N/A","CreatedAt":"2024-06-07 13:00:09 +0100 BST","CreatedSince":"13 months ago","Digest":"\u003cnone\u003e","ID":"35a88802559d","Repository":"ubuntu","SharedSize":"N/A","Size":"78.1MB","Tag":"latest","UniqueSize":"N/A","VirtualSize":"78.05MB"}
+{
+  "Containers":"N/A",
+  "CreatedAt":"2024-06-07 13:00:09 +0100 BST",
+  "CreatedSince":"13 months ago",
+  "Digest":"\u003cnone\u003e",
+  "ID":"35a88802559d",
+  "Repository":"ubuntu",
+  "SharedSize":"N/A",
+  "Size":"78.1MB",
+  "Tag":"latest",
+  "UniqueSize":"N/A",
+  "VirtualSize":"78.05MB"
+}
 ```
 
 Looking at this data, and thinking about what I want to do I can end
 up with some queries:
 
-1. Finding docker images within a size range (min, max optional)
+1. Finding docker images within a size range (min or max)
 2. Docker images older or younger than some date
 3. Ones with an exact name match (not using tag)
 4. Ones with a name that matches a regex
@@ -191,7 +204,7 @@ type Image {
 }
 ```
 
-It mostly does, it's just created is a different type. This is because trustfall
+It mostly does, it's just created is a different type. This is because Trustfall
 doesn't (yet) have a timestamp type and I'm also using `jiff::Timestamp`. Later
 on when going between the Trustfall queries and my types there'll have to be
 some conversion between the two. There is a clear difference between Rust
@@ -340,7 +353,7 @@ pub type ContextOutcomeIterator<VertexT, OutcomeT> = Box<dyn Iterator<Item = (Da
 The contexts are what we want to resolve, so for each property name I'll create a
 mapping from that context and property to the same context paired with the value of
 that property. I believe this all came together from looking at some example
-trustfall adapter implementations from Predrag's blog and talks but it was a while
+Trustfall adapter implementations from Predrag's blog and talks but it was a while
 ago so I can't trace back to exactly how I learned this.
 
 Just implementing this for the `created` property looks as follows:
@@ -545,7 +558,8 @@ but is apparently common in some things built on top of GraphQL. Currently,
 if you want to see what a filter can do you can check the ops here:
 [docs.rs](https://docs.rs/trustfall_core/latest/trustfall_core/ir/enum.Operation.html).
 Then couple that with looking up some of the example queries to see how
-to use them, there's a Trustfall playground and you can see some queries there.
+to use them, there's a Trustfall playground and you can see some queries
+[there](https://play.predr.ag/hackernews).
 
 Removing our edge queries and adding filter directives we'd change the following:
 
