@@ -346,8 +346,11 @@ Here we have a `ContextIterator` and we want to transform that into a
 look as follows:
 
 ```rust
-pub type ContextIterator<VertexT> = Box<dyn Iterator<Item = DataContext<VertexT>>>;
-pub type ContextOutcomeIterator<VertexT, OutcomeT> = Box<dyn Iterator<Item = (DataContext<VertexT>, OutcomeT)>>;
+pub type ContextIterator<VertexT> = Box<dyn Iterator<Item =
+    DataContext<VertexT>>>;
+
+pub type ContextOutcomeIterator<VertexT, OutcomeT> =
+    Box<dyn Iterator<Item = (DataContext<VertexT>, OutcomeT)>>;
 ```
 
 The contexts are what we want to resolve, so for each property name I'll create a
