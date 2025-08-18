@@ -366,10 +366,10 @@ pub(super) fn resolve_image_property<'a, V: AsVertex<Vertex> + 'a>(
 ) -> ContextOutcomeIterator<'a, V, FieldValue> {
     let func = match property_name {
         "created" => |v: DataContext<V>| match v.active_vertex() {
-            Some(Vertex::Image(img)) => (
-                v.clone(),
-                img.created_at.to_string().to_string(),
-            ),
+            Some(Vertex::Image(img)) => {
+                let created_at = img.created_at.to_string().to_string();
+                (v, created_at)
+            },
             None => (v, FieldValue::Null),
         },
         "repo" => todo!("implement property 'repo' in fn `resolve_image_property()`"),
@@ -389,6 +389,11 @@ Here I have to convert my `jiff::Timestamp` to a string and then use the `Into` 
 a `FieldValue`, for types with no conversion this is a bit simpler. But generally speaking this
 is reasonably straightforward. Get the active vertex (of which we only have one potential type),
 extract the property and return it.
+
+One important thing to note, cloning `v` is easy and what I initially did.
+However, it's not necessary and often you can avoid a potentially expensive clone
+by binding the second element of the tuple to a new variable so the compiler
+doesn't try and take a reference to a temporary value.
 
 ## Writing Your Edges.rs
 
