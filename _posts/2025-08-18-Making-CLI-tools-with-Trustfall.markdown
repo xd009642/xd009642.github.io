@@ -575,7 +575,7 @@ Removing our edge queries and adding filter directives we'd change the following
 {
   Image{
     name_matches(substring: "$name_regex")
-    size_in_range(min: $larger_than, max: &smaller_than
+    size_in_range(min: $larger_than, max: &smaller_than)
     name @output
     size @output
     created @output
