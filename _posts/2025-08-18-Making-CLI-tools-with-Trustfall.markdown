@@ -152,7 +152,7 @@ up gradually and (in my opinion) is the clearest order to implement.
 ## Writing Your vertex.rs
 
 In the Trustfall model a vertex is like a table in SQL, this will contain our parsed
-docker image data, we don't really any any other relations in application. It's also
+docker image data, we don't really have any other relations in application. It's also
 an enum and this is provided in the file for us to fill in as so:
 
 ```rust
