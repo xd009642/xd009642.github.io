@@ -15,17 +15,17 @@ If you know what crater is feel free to skip ahead, this won't be anything
 groundbreaking in terms of insights!
 
 [Crater](https://github.com/rust-lang/crater) helps detect regressions in
-the Rust compiler by grabbing all the projects on crates.io and then running
-`cargo build` and `cargo test` on them. This helps make sure that changes
-to the language or standard library don't cause any breakages in users
-projects.
+the Rust compiler by grabbing all the projects on crates.io and github and
+then running `cargo build/check` and `cargo test` on them. This helps make sure
+that changes to the language or standard library don't cause any breakages
+in users projects.
 
 It won't run every project, ones with flaky tests or that can't run in the
-environment often get blacklisted. But it will run through a lot. Looking,
-at the [crater queue](https://crater.rust-lang.org/) I can see one of the
-current runs is going over 1471548 jobs which is more than the number of
-crates on crates.io, looking at a report I can see it's testing multiple
-versions of crates so that's likely why.
+environment (a linux host) often get blacklisted. But it will run through
+a lot. Looking, at the [crater queue](https://crater.rust-lang.org/) I can
+see one of the current runs is going over 1471548 jobs which is more than
+the number of crates on crates.io, looking at a report I can see it's
+testing multiple versions of crates so that's likely why.
 
 # What is Coverage?
 
