@@ -65,11 +65,16 @@ Are there any parts that tests in the wild just don't hit? Mainly just curiosity
 at what the data says. Having a lot of eyes (crates) on an API makes it easier
 to spot regressions, so what aren't we looking at?
 
-Plus when it comes to assessing nightly features, which ones are more or less
+Also, given the limitations to what crates crater can run and the impacts of the
+blacklist of some crates. This could function of a benchmark of craters effectiveness
+as a smoke test. Maybe we could spot some areas where changes to what crater can
+run could have the largest gains in it's usefulness.
+
+Plus when it comes to assessing nightly (library) features, which ones are more or less
 widely tested? With source code analysis we can come up with usage but we don't
 necessarily know how much that code is being ran. There's also potential to couple
-source analysis and coverage analysis but I've not thought of any interesting
-things to get from that.
+source analysis and coverage analysis, an initial thought is that the ratio of what
+people use but don't test could show where things are hard to write tests for.
 
 Of course getting more data for analysis and doing something useful with that
 analysis is another matter entirely. But by putting this idea out maybe some people
