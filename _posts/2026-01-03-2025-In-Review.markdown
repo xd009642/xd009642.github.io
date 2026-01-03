@@ -1,0 +1,122 @@
+I did one last year so it's probably time for another year in review. It'll be
+mentioned more in the non-technology section but I did spend 6 months in Japan
+and that will be a theme in why I haven't made as much progress in side projects
+as I desired.
+
+# tarpaulin
+
+Tarpaulin had some significant speed improvements in 2025 as well as improvements
+on memory usage in the llvm coverage parsing. Additionally, the llvm profraw parsing
+code I've written in [llvm-profparser](https://github.com/xd009642/llvm-profparser)
+is being used by Ferrous Systems in a new project. They've helped by contributing
+more testing, and fixes to parts of the library which Tarpaulin doesn't hit and it's
+been a pleasure collaborating with them on something I wrote.
+
+The focus in 2026 will be taking more of the existing issues and closing more and
+more of them. Hopefully, UX issues with workspaces and excluding code from results
+can be solved in a way that's more intuitive to people.
+
+Tarpaulin has seen 14 releases in 2025 (and including New Years Day). That's 3 more
+releases than last year and from 12 contributors (including me and ignoring
+dependabot).
+
+# streaming audio API blog series
+
+In 2024 I started a [blog series on streaming audio APIs](2024/10/19/how-to-build-streaming-audio-APIs) 
+with 4 posts released and a working system which could be used as a basis for things
+like streaming transcription services. In 2025 I only managed to release a single post
+but with 2 others in a draft state.
+
+Currently, there's a post on implementing the production metrics for these sorts of
+APIs. It's in revisions and I hope to get it out within a month or two. But first I want
+to add more details to the section on tokio-metrics...
+
+After that I aim on releasing the one on batching futures for performance. I might be
+ambitious and aim for the Opentelemetry one but given how terrible the Otel developer
+experience is that one might take a long time...
+
+# wiremocket
+
+Last year I released [wiremocket](https://github.com/xd009642/wiremocket) to minimal
+interest. This was expected as not everyone likes mocking, and most people don't like
+websockets. However, it's as complete as I need for the few times I need it which
+means unless people raise issues or I need more it can be seen as feature complete.
+
+My current plan is just to keep bumping up dependency versions as new versions come
+out and otherwise keep it in a light maintenance mode.
+
+# asyncapiv3
+
+I did start some work on improving [asyncapiv3](https://github.com/dghilardi/asyncapiv3)
+submitting 7 PRs in the end. My hope was to make something similar to an openapi
+experience for websocket APIs. I'll have to go back into my notes for this but I
+believe the library should be at a place where it can be used to power something
+similar to [utoipa](https://github.com/juhaku/utoipa) in Rust.
+
+Currently at my day job, clients consuming websocket APIs is lower priority than
+it used to be. This does mean my work on this has somewhat stalled.
+
+# trustfall
+
+Last year I got into [trustfall](https://github.com/obi1kenobi/trustfall) some
+more and wrote [a post on it](https://xd009642.github.io/2025/08/18/Making-CLI-tools-with-Trustfall.html).
+I also, revived Predrag's WIP PR for a trustfall docs site and filled in some
+more details (See the PR [here](https://github.com/obi1kenobi/trustfall/pull/807)).
+
+There's a [tracking issue](https://github.com/obi1kenobi/trustfall/issues/819) for
+ideas for the docs and missing holes. I hope to get back to this work and hopefully
+something will be up and hosted this year. Trustfall is a cool piece of technology
+and helping making it easier to adopt would make me personally happy!
+
+# outside of technology
+
+I mentioned in the past year in review I'd be spending some months in Japan.
+All in all that was 6 months during which I did get married with a traditional
+Shinto ceremony. Obviously, a large landmark in life and definitely a unique
+experience, the kimono was like 5-7 layers and in 85% humidity it does become
+a feat of human endurance.
+
+In Japan my Japanese progress has obviously leapt forwards. It's not where I
+want it to be but spending most of my time around people with little to no
+English has sharpened up my listening comprehension and speaking skills. I
+also helped out on the family rice farm splitting my time between my day job
+and rice farming for a few months.
+
+I did get to see a reasonable amount of Japan, a lot around the Shizuoka
+prefecture where I was living, Tokyo, Nagoya, Nagano, Hiroshima, Imabari,
+Yamanashi. I should be back again this year and hopefully I'll have time
+to explore more of Japan north of Tokyo.
+
+Reading wise I just managed to finish _Hyperion_ by Dan Simmons, and I'm
+partway through _How to Blowup a Pipeline_ by Andreas Malm. I didn't get to
+any of my other reading targets too many other things going on! I did start
+reading more manga though, mainly classics and seinen with Beserk and Oyasumi
+Punpun being the ones that have taken the most of my time.
+
+I did definitely play a lot more games though. I finished everything I planned
+to last year (1000xRESIST, Chasing Static, Hollowbody, Half Life 1). I also
+picked and completed other fun indies like [Parking Garage Rally Circuit](https://store.steampowered.com/app/2737300/Parking_Garage_Rally_Circuit/)
+and [Selaco](https://store.steampowered.com/app/1592280/Selaco/).
+
+[Cult of the Lamb](https://store.steampowered.com/app/1313140/Cult_of_the_Lamb/) was
+also something I really enjoyed. But the most time I've put in a game last 
+year has to be [Dwarf Fortress](https://store.steampowered.com/app/975370/Dwarf_Fortress/)
+where I've racked up around 100 hours in 2025.
+
+In terms of TV/Film, I've mainly watched a lot of anime since getting
+back to the UK. All of Naruto + Naruto Shippuden, Orb, Dandadan, Spy X Family
+and Yuru Camp are the ones that spring to mind as standouts. For film I've
+watched a lot and some standouts (not animated) are:
+
+* Shin Kamen Rider (Dir. Hideaki Anno)
+* Onibaba (Dir. Kaneto Shindō)
+* Decision to Leave (Dir. Park Chan-wook)
+* Memories of Murder (Dir. Bong Joon Ho)
+* Pulse (Dir. Kiyoshi Kurosawa)
+* Weapons (Dir. Zach Cregger)
+* In the Mood for Love (Dir. Wong Kar-Wai)
+
+I've also started trying to watch all Akira Kurosawa films: Seven Samurai, Ran and 
+Throne of Blood are all amazing. For animated films Jin Roh - Wolf Brigade is an
+amazing work of animation and 100 meters might get me on a sport anime kick. Plus
+the Chainsaw Man movie was an amazing spectacle.
