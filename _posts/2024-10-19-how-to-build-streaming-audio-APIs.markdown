@@ -65,7 +65,7 @@ of some planned sections:
 2. [API design]({% post_url 2024-10-20-designing-a-streaming-audio-API %})
 3. [Audio Decoding and Resampling]({% post_url 2024-11-04-streaming-audio-APIs:-audio-decoding %})
 4. [The Model]({% post_url 2024-12-03-streaming-audio-APIs:-the-model %})
-5. [Making the Axum API]({% post_url 2025-01-20-streaming-audio-APIs-the-axum-server %})
+5. [Making the Axum API]({% post_url 2025-01-20-streaming-audio-APIs:-the-axum-server %})
 5. Testing the system
 6. Improving streaming performance via batching futures
 7. Instrumented the service for production monitoring (traces, metrics etc)
