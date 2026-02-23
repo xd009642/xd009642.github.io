@@ -331,7 +331,7 @@ fn generate_exclude_list<'a>(
 }
 ```
 
-## The Final Pieces
+# The Final Pieces
 
 The final steps are to create the [Clap](https://crates.io/crates/clap) CLI. Here we'll 
 create an enum of commands with some predefined ones so we can do `dc test`, `dc nextest`,
@@ -343,14 +343,11 @@ Aside from that every command will have a `--no-run` option and other args will 
 after `--`. Clap doesn't seem to allow me to grab all the unexpected args as a `Vec<String>`
 or some sort of map otherwise, which makes sense but is a bit of added friction to the CLI.
 
-The last steps are just integrating all the above parts and boom we have a working program
-where I can run commands like:
-
 ```
 dc test -- --all-features
 ```
 
-That CLI creation and final integration is as follows:
+That CLI interface defined with Clap is as follows::
 
 ```rust
 const CARGO_TEST_TEMPLATE: &'static str = "cargo test {% for pkg in packages %} -p {{ pkg }} {% endfor %} {% for arg in args %} {{ arg }} {% endfor %}";
@@ -419,7 +416,11 @@ pub struct Args {
     #[command(flatten)]
     required: RequiredArgs,
 }
+```
 
+Taking this CLI and the above code and integrating it altogether TODO write more on this
+
+```rust 
 fn main() -> anyhow::Result<()> {
     let args = RunCommand::parse();
 
@@ -493,6 +494,10 @@ With this the user can add their own `-p` or `-e` to the cargo test templates fo
 always want to test i.e. when things might break because of stuff not in the package workspace.
 I haven't made any effort to remove conflicts in that case. There's also probably stuff with
 propagating environment to the process which is easy enough to do but I don't have a need for it.
+
+Another thing would be applying this to multiple commits or between branches. I'll likely look
+into that the first moment I feel a need for it myself - I don't see it being too much extra
+just maybe a bit of faff.
 
 Overall, I've made something that works on my projects and I don't have a strong motiviation to
 make into a more general project for a wider community. I have a feeling this is solved by other
