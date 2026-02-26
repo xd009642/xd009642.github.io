@@ -227,11 +227,9 @@ arguments and a Minijinja tempalte lets us express things like loops to generate
 Off the bat I created this template for a simple `cargo test -p package_1 -p package_2` given a list
 of those two packages:
 
-<pre>
 ```
 cargo test {% for pkg in packages %} -p {{ pkg }} {% endfor %}
 ```
-</pre>
 
 This can easily be expanded to add a list of other arguments as well or changed from `-p` to `-e` to
 exclude packages. To aid in writing templates, Minijinja has a
@@ -405,7 +403,6 @@ dc test -- --all-features
 
 That CLI interface defined with Clap is as follows::
 
-<pre>
 ```rust
 const CARGO_TEST_TEMPLATE: &'static str = "cargo test {% for pkg in packages %} -p {{ pkg }} {% endfor %} {% for arg in args %} {{ arg }} {% endfor %}";
 const CARGO_NEXTEST_TEMPLATE: &'static str = "cargo nextest {% for pkg in packages %} -p {{ pkg }} {% endfor %} {% for arg in args %} {{ arg }} {% endfor %}";
@@ -474,7 +471,6 @@ pub struct Args {
     required: RequiredArgs,
 }
 ```
-</pre>
 
 # Missing Pieces
 
