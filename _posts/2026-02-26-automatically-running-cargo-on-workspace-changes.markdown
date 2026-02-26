@@ -229,7 +229,7 @@ of those two packages:
 
 <pre>
 ```
-cargo test {% for pkg in packages %\} -p {{ pkg }} {% endfor %}
+cargo test {% for pkg in packages %} -p {{ pkg }} {% endfor %}
 ```
 </pre>
 
