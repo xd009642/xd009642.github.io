@@ -126,7 +126,7 @@ is a reasonably good resource if you've not heard of it before. The reason I'm u
 for prefix matching is to get ergonomic checks on if something is within a directory tree.
 To visualise this here's a potential trie we might construct from a cargo workspace:
 
-![image info](/assets/2026XXXX/trie.png)
+![image info](/assets/20260226/trie.png)
 
 Notice I say ergonomic not fast. While tries are used to speed up prefix based matching, we
 don't really know if it'll impact things at this scale. The trie is going to be constructed
@@ -331,13 +331,64 @@ fn generate_exclude_list<'a>(
 }
 ```
 
-# The Final Pieces
+# Integrating the Current Pieces
 
-The final steps are to create the [Clap](https://crates.io/crates/clap) CLI. Here we'll 
-create an enum of commands with some predefined ones so we can do `dc test`, `dc nextest`,
-`dc build` and `dc run` where run is the only one without a presupplied template. We'll
-pop some convenience methods on the arg types to get out the right templates, paths etc
-depending on defaults or what the user supplies.
+Given the root of the project, we can now:
+
+1. Get the changes
+2. Get the packages in the project
+
+Using `radix_trie` if we do `trie.get_ancesntor_value(&changed_file)` it
+will give us a package if one exists. Using the initial set of changes we
+get the initial packages impacted. Then we can get these packages, check the
+dependencies for ones in the workspace. Add it to the list of packages and then
+repeat. Continue until no new packages are added.
+
+An astute reader might think "couldn't we have constructed the dependency graph
+and just do a graph traversal". And yes we could. But for the size of workspaces I
+work with this felt like overkill. Plus I've only got 7 direct dependencies so far
+and 3 of them are >1.0
+
+```rust
+let considered_files = repository::get_changed_source_files(&root)?;
+let packages = cargo::find_packages(&root)?;
+let mut changed_packages = BTreeSet::new();
+let mut end_package_names = BTreeSet::new();
+
+for file in &considered_files {
+    if let Some(package) = packages.get_ancestor_value(&root.join(file)) {
+        changed_packages.insert(root.join(file));
+        end_package_names.insert(package.name.as_str());
+    }
+}
+
+let mut changed_packages_previous = 0;
+
+while changed_packages_previous != changed_packages.len() {
+    changed_packages_previous = changed_packages.len();
+
+    for (key, val) in packages.iter() {
+        if val
+            .dependencies
+            .iter()
+            .any(|x| changed_packages.contains(x))
+        {
+            if let Some(package) = packages.get_ancestor_value(&root.join(key)) {
+                changed_packages.insert(root.join(key));
+                end_package_names.insert(package.name.as_str());
+            }
+        }
+    }
+}
+```
+
+# Designing the CLI
+
+The final step is to create the CLI, for this I'll be using [Clap](https://crates.io/crates/clap). 
+Here we'll  create an enum of commands with some predefined ones so we can do `dc test`,
+`dc nextest`, `dc build` and `dc run` where run is the only one without a presupplied
+template. We'll pop some convenience methods on the arg types to get out the right templates,
+paths, and other things depending on defaults or what the user supplies.
 
 Aside from that every command will have a `--no-run` option and other args will be supplied
 after `--`. Clap doesn't seem to allow me to grab all the unexpected args as a `Vec<String>`
@@ -415,76 +466,6 @@ pub struct Args {
     command: Option<String>,
     #[command(flatten)]
     required: RequiredArgs,
-}
-```
-
-Taking this CLI and the above code and integrating it altogether TODO write more on this
-
-```rust 
-fn main() -> anyhow::Result<()> {
-    let args = RunCommand::parse();
-
-    let root = args.required_args().path();
-    let considered_files = repository::get_changed_source_files(&root)?;
-    let packages = cargo::find_packages(&root)?;
-    let mut changed_packages = BTreeSet::new();
-    let mut end_package_names = BTreeSet::new();
-
-    for file in &considered_files {
-        if let Some(package) = packages.get_ancestor_value(&root.join(file)) {
-            changed_packages.insert(root.join(file));
-            end_package_names.insert(package.name.as_str());
-        }
-    }
-
-    let mut changed_packages_previous = 0;
-
-    while changed_packages_previous != changed_packages.len() {
-        changed_packages_previous = changed_packages.len();
-
-        for (key, val) in packages.iter() {
-            if val
-                .dependencies
-                .iter()
-                .any(|x| changed_packages.contains(x))
-            {
-                if let Some(package) = packages.get_ancestor_value(&root.join(key)) {
-                    changed_packages.insert(root.join(key));
-                    end_package_names.insert(package.name.as_str());
-                }
-            }
-        }
-    }
-
-    if let Some(cmd) = args.command() {
-        let mut cmd = generate_command(
-            &cmd,
-            &packages,
-            &end_package_names,
-            &args.required_args().args,
-        )?;
-        if args.required_args().no_run {
-            let mut args = vec![];
-            args.push(cmd.get_program().to_string_lossy());
-            args.extend(cmd.get_args().into_iter().map(|x| x.to_string_lossy()));
-            println!("{}", shell_words::join(args));
-        } else {
-            cmd.status()?;
-        }
-    } else if !changed_packages.is_empty() {
-        println!(
-            "Changed packages end: `-p {}`",
-            end_package_names
-                .iter()
-                .map(|x| *x)
-                .collect::<Vec<_>>()
-                .join(" -p ")
-        );
-    } else {
-        println!("No packages have changed");
-    }
-
-    Ok(())
 }
 ```
 
