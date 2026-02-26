@@ -49,7 +49,7 @@ is definitely not as friendly as `dc test`.
 
 # Identifying Impacted Packages
 
-## Finding Changes via Git2
+## Finding Changes via Git
 
 My first thought here is we don't want to run on a package if any file in it has changed. That would
 be safer but we can probably ignore anything that's not a source file, manifest or clearly generating
@@ -122,7 +122,7 @@ For a more fully featured one I'd include dirty changes (or have the option to i
 them), as well as allowing comparisons between more than the current head and parent.
 But this is intended to run in CI and I'm happy running on every commit - for now.
 
-## Trie Stuff
+## Using a Trie to Represent Structure
 
 A trie is a tree structure also called a prefix tree, the [wikipedia](https://en.wikipedia.org/wiki/Trie)
 is a reasonably good resource if you've not heard of it before. The reason I'm using a trie
@@ -222,7 +222,7 @@ pub fn find_packages(root: &Path) -> anyhow::Result<Trie<PathBuf, Package>> {
 As mentioned before I'm going to use minijinja for this. The motivation is that we have a list
 of packages, we'll have a list of changed packages and probably a list of other arguments to apply
 to the command. Depending on the command we might have different ways of providing those lists as
-arguments and a Minijinja tempalte lets us express things like loops to generate our command string.
+arguments and a Minijinja template lets us express things like loops to generate our command string.
 
 Off the bat I created this template for a simple `cargo test -p package_1 -p package_2` given a list
 of those two packages:
@@ -248,7 +248,7 @@ packages or args. This does rely on us having some reserved names for certain th
 will make use of. I've gone for `packages` for the packages to include and `args` for the other args.
 
 We could also not use undeclared variables and just insert all the variables available to us. But why
-do extra work when it's trivial to avoid it? Minijinja uses json interally a lot, and the Minijinja
+do extra work when it's trivial to avoid it? Minijinja uses json internally a lot, and the Minijinja
 value type is analogous to the `serde_json::Value`. This also means we can create Mininja values from
 types that implement `Serialize` and we don't have to worry too much as long as things all look like
 they'd serialize into json without a care. 
@@ -487,7 +487,7 @@ Another thing would be applying this to multiple commits or between branches. I'
 into that the first moment I feel a need for it myself - I don't see it being too much extra
 just maybe a bit of faff.
 
-Overall, I've made something that works on my projects and I don't have a strong motiviation to
+Overall, I've made something that works on my projects and I don't have a strong motivation to
 make into a more general project for a wider community. I have a feeling this is solved by other
 systems better and that's fine - I don't do a lot of this stuff looking for users more to scratch
 an itch.
@@ -495,7 +495,7 @@ an itch.
 # Will I Use This? 
 
 Probably not, but maybe. Recently Github has been having "_issues_" as I'm sure a lot of people
-are aware. Seems like they're targetting the lofty heights of one 9 of uptime. And during this at
+are aware. Seems like they're targeting the lofty heights of one 9 of uptime. And during this at
 $day_job we've seen CI pipelines in workspaces that normally take 4 minutes take upwards of 50
 minutes. Maybe this would make them take more like 20 minutes when Github Actions are having
 a moment. But then with degraded performance like that no bets are off. The main thing is I
