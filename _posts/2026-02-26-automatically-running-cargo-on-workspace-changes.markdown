@@ -225,7 +225,7 @@ Off the bat I created this template for a simple `cargo test -p package_1 -p pac
 of those two packages:
 
 ```
-cargo test {% for pkg in packages %} -p {{ pkg }} {% endfor %}
+cargo test \{% for pkg in packages %\} -p \{\{ pkg \}\} \{% endfor %\}
 ```
 
 This can easily be expanded to add a list of other arguments as well or changed from `-p` to `-e` to
