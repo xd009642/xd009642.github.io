@@ -23,6 +23,8 @@ github_username:  xd009642
 
 # Build settings
 markdown: kramdown
+kramdown:
+  parse_block_html: false
 mathjax: true
 theme: minima
 gems:
