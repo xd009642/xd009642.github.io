@@ -1,3 +1,6 @@
+---
+render_with_liquid: false
+---
 Given a Rust project using workspaces with potentially a large amount of packages
 how can we make it quicker to run tests or other tooling when the project changes.
 Using build systems like Bazel and Buck2 you can use the build dependency graph and
