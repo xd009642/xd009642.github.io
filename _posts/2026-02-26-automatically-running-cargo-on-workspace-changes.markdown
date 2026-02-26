@@ -92,13 +92,19 @@ pub fn get_changed_source_files(root: &Path) -> anyhow::Result<Vec<PathBuf>> {
 
     let mut diff_opt = DiffOptions::new();
 
-    let diff =
-        repo.diff_tree_to_tree(Some(&parent_tree), Some(&commit_tree), Some(&mut diff_opt))?;
+    let diff = repo.diff_tree_to_tree(
+        Some(&parent_tree), 
+        Some(&commit_tree), 
+        Some(&mut diff_opt)
+    )?;
 
     let mut considered_files = vec![];
     diff.foreach(
         &mut |delta, _| {
-            if let Some(path) = delta.new_file().path().or_else(|| delta.old_file().path()) {
+            if let Some(path) = delta.new_file()
+                                     .path()
+                                     .or_else(|| delta.old_file().path()) 
+            {
                 if is_considered(&root.join(path)) {
                     considered_files.push(path.to_path_buf());
                 }
@@ -304,7 +310,9 @@ This changes the match on variable names to be as follows (adding the arg is omi
 ```rust
 match var.as_str() {
     "packages" => {
-        variables.insert("packages", Value::from_serialize(included_packages));
+        variables.insert("packages", 
+            Value::from_serialize(included_packages)
+        );
     }
     "excludes" => {
         variables.insert(
@@ -378,7 +386,8 @@ while changed_packages_previous != changed_packages.len() {
             .iter()
             .any(|x| changed_packages.contains(x))
         {
-            if let Some(package) = packages.get_ancestor_value(&root.join(key)) {
+            let path = root.join(key)
+            if let Some(package) = packages.get_ancestor_value(&path) {
                 changed_packages.insert(root.join(key));
                 end_package_names.insert(package.name.as_str());
             }
@@ -407,10 +416,17 @@ That CLI interface defined with Clap is as follows::
 
 {% raw %}
 ```rust
-const CARGO_TEST_TEMPLATE: &'static str = "cargo test {% for pkg in packages %} -p {{ pkg }} {% endfor %} {% for arg in args %} {{ arg }} {% endfor %}";
-const CARGO_NEXTEST_TEMPLATE: &'static str = "cargo nextest {% for pkg in packages %} -p {{ pkg }} {% endfor %} {% for arg in args %} {{ arg }} {% endfor %}";
-const CARGO_BUILD_TEMPLATE: &'static str = "cargo build {% for pkg in packages %} -p {{ pkg }} {% endfor %} {% for arg in args %} {{ arg }} {% endfor %}";
-const CARGO_BENCH_TEMPLATE: &'static str = "cargo build {% for pkg in packages %} -p {{ pkg }} {% endfor %} {% for arg in args %} {{ arg }} {% endfor %}";
+const CARGO_TEST_TEMPLATE: &'static str = 
+"cargo test {% for pkg in packages %} -p {{ pkg }} {% endfor %} {% for arg in args %} {{ arg }} {% endfor %}";
+
+const CARGO_NEXTEST_TEMPLATE: &'static str = 
+"cargo nextest {% for pkg in packages %} -p {{ pkg }} {% endfor %} {% for arg in args %} {{ arg }} {% endfor %}";
+
+const CARGO_BUILD_TEMPLATE: &'static str = 
+"cargo build {% for pkg in packages %} -p {{ pkg }} {% endfor %} {% for arg in args %} {{ arg }} {% endfor %}";
+
+const CARGO_BENCH_TEMPLATE: &'static str = 
+"cargo build {% for pkg in packages %} -p {{ pkg }} {% endfor %} {% for arg in args %} {{ arg }} {% endfor %}";
 
 #[derive(Debug, Parser)]
 pub enum RunCommand {
@@ -424,7 +440,8 @@ pub enum RunCommand {
 impl RunCommand {
     pub fn required_args(&self) -> &RequiredArgs {
         match self {
-            Self::Test(a) | Self::Nextest(a) | Self::Build(a) | Self::Bench(a) => a,
+            Self::Test(a) | Self::Nextest(a) 
+                | Self::Build(a) | Self::Bench(a) => a,
             Self::Run(a) => &a.required,
         }
     }
@@ -464,10 +481,11 @@ impl RequiredArgs {
 
 #[derive(Debug, Parser)]
 pub struct Args {
-    /// Run the following command. This accepts a minijinja template where `packages` is a list of
-    /// packages that can be included and `excludes` is a list of packages that can be excluded.
-    /// For a cargo test you can write the template `cargo test {% for pkg in packages %} -p {{ pkg
-    /// }}{% endfor %}`
+    /// Run the following command. This accepts a minijinja template where
+    /// `packages` is a list of packages that can be included and `excludes`
+    /// is a list of packages that can be excluded. For a cargo test you can
+    /// write the template 
+    /// `cargo test {% for pkg in packages %} -p {{ pkg }}{% endfor %}`
     #[arg(short, long)]
     command: Option<String>,
     #[command(flatten)]
