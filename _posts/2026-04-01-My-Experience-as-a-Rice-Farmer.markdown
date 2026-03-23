@@ -76,6 +76,10 @@ the field:
 
 #![adhoc-piping](/assets/20260401/plumbing.jpg)
 
+And the water entering that field:
+
+#![water-coming-in](../assets/20260401/filling_water.jpg)
+
 After flooding, a tractor with a flat rear blade will be moved over the field
 a few times to level it. When the planting vehicle goes over the field little
 arms pluck off some rice and stick it down. If the soil is too far from the
@@ -119,12 +123,18 @@ to come back every week or so to cut the grass that sprouts up on the edge of th
 If we don't it will ground the fence and drain the battery and our rice will fall victim
 to the local wildlife.
 
+After planting our fields look like this:
+
+![planted](/assets/20260401/post_planting.jpg)
+
 # Draining Time
 
 When the rice gets older - around waist height the field is drained. Some sort of narrow
 plough is moved between the rows pushing the mud up around the rice to hold it up and
 then the water intake is closed and the field left to drain and dry out. Then the rice
 will continue to grow until it's harvest time.
+
+![ready-to-drain](/assets/20260401/half_grown.jpg)
 
 Unforunately, I left Japan a couple of weeks after draining and I haven't yet experienced
 the final stage of harvest. I have this picture I was sent of the rice near harvest time
@@ -148,6 +158,30 @@ going through the nearby forests - they're nocturnal and rather dangerous so I'm
 of that!
 
 # Local Fauna
+
+In rice fields you can see a lot of interesting wildlife. Frogs and salamanders help
+protect the crop by eating bugs that might feed on the rice. You also might see
+snakes nearby who feed on them as well.
+
+![salamander](/assets/20260401/salamander.jpg)
+
+![frog](/assets/20260401/frog.jpg)
+
+When clearing grass once I saw a snake dart out from under a pickup truck we'd had
+parked up for a few hours as I walked past. I then looked at the grass I was going 
+to cut and saw it hunkered down in the grass but obscured enough to not get a picture
+and not wanting to disturb it I moved on. After all I don't know how dangerous it might
+be.
+
+I asked my brother-in-law about the snakes later on when he came to the truck to get
+a drink and asked if they're dangerous. And that's how I first heard the Japanese
+word 有毒な (yūdokuna) - or venomous in English. Not speaking any English he further
+translated it by grabbing his throat and miming frothing at the mouth.
+
+There are also black kites flying around, they've been known to swoop down and snatch
+up kittens and there are warning signs in some more populated places about keeping close
+to small pets. I've seen them circling in the heat but it's hard to get a good photograph
+of birds with a normal smartphone camera.
 
 # Economics of Rice Farming
 
@@ -194,4 +228,15 @@ more rice farms close and further impacts due to decreased output.
 
 # Finally
 
-Reading this last section it might seem to end in doom and gloom. 
+Reading this last section it might seem to end in doom and gloom. This isn't really
+how I wanted to sign off on things. Rice farming was a positive experience for me,
+connection with nature, building relationships with my wife's family and growing my
+Japanese skills. Doing a day of manual labour, chatting shit then going for the onsen
+and some BBQ and beers is far better than grinding away at some enterprise SaaS that
+will probably disappear in a few years.
+
+Farming becoming economically unviable seems to be something afflicting many countries.
+At some point I expect a wakeup call or transition. Either things are changed to make
+it viable full-time or Japan's system of small independent farms will gradually fade
+away. Only time will tell, but I hope that rural communities can continue to survive
+and also thrive.
