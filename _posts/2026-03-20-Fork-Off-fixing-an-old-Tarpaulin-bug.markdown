@@ -71,3 +71,8 @@ while cargo tarpaulin --engine ptrace --follow-exec --dump-traces --include-test
 
 Sure enough running this I get a failure after around 5-10 runs on average. I triggered a few just in 
 case there was anything unclear in what could be the cause.
+
+# Debugging
+
+To debug this we go back to an old friend [tarpaulin-viewer](https://github.com/xd009642/tarpaulin-viewer) a
+Qt app to visualise the dumped traces from Tarpaulin.
