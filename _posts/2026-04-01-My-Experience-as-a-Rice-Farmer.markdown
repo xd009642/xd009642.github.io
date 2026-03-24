@@ -193,7 +193,7 @@ shortages and mitigate against disasters. This situation is likely to occur
 again, and as an outsider looking at how Japan's farming system is organised
 it seems unavoidable without significant reforms.
 
-In Japan the average age of a full-time rice farmer is around 65. For younger
+In Japan the average age of a full-time rice farmer is around 70. For younger
 generations they can only afford to do it part-time, 1 or 2 days a week. They
 also own 4-6 rice fields. There are no factory farms and large scale operations.
 
@@ -205,9 +205,12 @@ enough fields to account for the family rice consumption and not to sell rice.
 Part of the reason of this is the Gentan system, designed to protect small-scale
 farmers income it prevents large scale factory farming of rice and encourages
 ownership of smaller farms. It has been officially abolished but it still shapes
-how the rice economy works. I've seen some claims this was part of a system to
-discourage communism initially by encouraging ownership of business and
-self-sufficiency. 
+how the rice economy works. This was part of a system to discourage communism
+initially by encouraging ownership of business and preventing absentee landlords
+accumulating large tracts of land where people who work the fields would be forced
+into renting. It should be noted the UK's system is like this with rich landowners
+accumulating more farmland for tax reasons and renting it to farmers who often
+struggle to make farming profitable.
 
 Farmers also sell their crops via a centrally managed system which fixes the price. 
 Historically, crops used for animal feed have fetched higher price than human quality
@@ -218,13 +221,17 @@ Another issue is automation of farming. Reading this account of rice farming
 you might thing this seems very manual and it is. In America rice is aerially
 planted. With consistency in fields and the distribution of the rice leads
 to higher yields. And if you're dealing with such small farm area that becomes
-more important - and things like aerial planting become less economically viable. 
+more important - and things like aerial planting become less economically viable.
+An American farm can be roughly 100 times larger than a Japanese one.
 
 Additionally, with rising cost of living a lot of the youth of Japan move to
 cities like Tokyo, Osaka and Nagoya where they can find better paid office work.
 Local rural economies struggle more as they lose people and income from work
 doesn't scale with the costs of living. It seems unavoidable we'll see more and
 more rice farms close and further impacts due to decreased output.
+
+If you're interested in this there's a video about this on
+[Asianometry](https://www.youtube.com/watch?v=l4vTQV3HjKU).
 
 # Finally
 
