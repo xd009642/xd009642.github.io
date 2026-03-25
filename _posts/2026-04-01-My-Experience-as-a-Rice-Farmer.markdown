@@ -9,8 +9,8 @@ full harvest process was done but I'll take you as far as I got and also try
 and share other insights I gleaned.
 
 Unfortunately, while I thought I took a lot of photos it seems I'm missing
-things I would have liked to have captured for this. I'll go through and
-either fill in with images I find on Google or artists impressions.
+things I would have liked to have captured for this. Where applicable there'll
+be other sources and at least one video linked for more information.
 
 # Preparation
 
@@ -94,21 +94,36 @@ resulted in some work to dig down and fill the area letting water out with rocks
 harder mud and compacting it with the bucket of a digger. After this work was done
 the field held it's water and we were able to think about planting.
 
+After poking around to figure out why water was draining I managed to get this
+picture of the hole that started to open up. I guess that's a sinkhole of sorts.
+
+![sinkhole](/assets/20260401/leaking.jpg)
+
 An interesting fact is that rice doesn't actually need standing water to grow. The
 water helps by stopping weeds growing around the rice taking resources and protects
 the rice from certain pests that would eat it.
 
+For some further watching, [this video](https://www.youtube.com/watch?v=cqrTHSwaqu8)
+shows a more advanced but very similar for a different farm. The main difference is
+that they don't need to manually go to the inlet gates to open/close them and instead
+have some more modern gates controlled via mobile phone.
+
 # Planting Day
 
-Here we go, everything we've been working toward. The previous process has taken from
-mid-February and now it's early May. We go off and buy seed trays of rice to load
-into the planting machine. Below you can see a picture of the planting process:
+It's planting day, turning up I can see the neighbours have already planted and here you
+can see our ready but empty field next to their freshly planted field:
 
-#![planting](/assets/20260401/planting.jpg)
+![comparison](../assets/20260401/neighbours_done.jpg)
+
+But here we go, everything we've been working toward. The previous process has taken from
+mid-February and now it's early May. We go off and buy seed trays of rice to load
+into the Rice Transplanter. Below you can see a picture of the planting process:
+
+![planting](/assets/20260401/planting.jpg)
 
 An arm will move along the bottom of the rice and pull off a clump of rice and then 
 plunge it into the ground. It will keep moving back and forth doing this at regular
-intervals.
+intervals. It the motion of it working is reminiscent of a typewriter at work.
 
 After it's done there's some leftover rice, and there might be gaps where things
 weren't perfectly level. We go out into the field wearing
@@ -116,6 +131,9 @@ weren't perfectly level. We go out into the field wearing
 between the big toe and the other toes. It's meant to help our feet not get stuck in
 the wet mud. Grabbing rice in small bunches we pull them from the seed tray
 and plant them about an inch deep into the mud and compact some mud around it.
+
+_Fun language note, my wife asked me if I saw the tabi once and I thought she meant
+a tabby cat. I wasn't aware of the name of the footwear._
 
 Now the rice is in the field we're at risk of attack. Wild boar and deer just love to
 snack on our hard work - this means it's time to put up the electric fence. We'll have
@@ -181,7 +199,9 @@ translated it by grabbing his throat and miming frothing at the mouth.
 There are also black kites flying around, they've been known to swoop down and snatch
 up kittens and there are warning signs in some more populated places about keeping close
 to small pets. I've seen them circling in the heat but it's hard to get a good photograph
-of birds with a normal smartphone camera.
+of birds with a normal smartphone camera. But I have my best capture of one:
+
+![bird](/assets/20260401/bird.jpg)
 
 # Economics of Rice Farming
 
