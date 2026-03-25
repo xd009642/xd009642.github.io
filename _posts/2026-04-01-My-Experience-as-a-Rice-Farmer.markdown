@@ -1,4 +1,4 @@
-I've been inspired to write somethinng for
+I've been inspired to write something for
 [April Cools Club](https://www.aprilcools.club/), and what fits better from my
 normal content than my experience rice farming in rural Japan!
 
@@ -6,7 +6,7 @@ For those who aren't aware, in 2025 I spent January-July in Japan staying with
 my wife's family. During that time we helped out on the family rice farm near
 Shuzenji in the Shizuoka prefecture. I unfortunately had to leave before the
 full harvest process was done but I'll take you as far as I got and also try
-and share other insights gleaned.
+and share other insights I gleaned.
 
 Unfortunately, while I thought I took a lot of photos it seems I'm missing
 things I would have liked to have captured for this. I'll go through and
@@ -14,24 +14,24 @@ either fill in with images I find on Google or artists impressions.
 
 # Preparation
 
-At the start of spring we come back to the fields, they've been left fallow
+At the start of spring we come back to the fields. They've been left fallow
 over the winter and the dead rice plants from last year cover them. They're
-currently dry, we'll flood them later on once they've been prepared. Hard and
-spiky we have cordless strimmers with metal blades to cut through this and not
-take forever.
+currently dry, we'll flood them later on once they've been prepared. Because it's
+hard and spiky we have cordless strimmers with metal blades to cut through this
+and not take forever.
 
 I don't have a picture of a rice field before clearing but here is one of the
 fields partially cleared:
 
 ![partially_cleared_field](/assets/20260401/partially_cleared_field.jpg)
 
-As part of clearing and getting ready we also dig the drainage ditches at the
-side of the fields out again. When the fields were drained last year the soft
+As part of clearing and getting ready we also dig the drainage ditches along the
+side of the fields. When the fields were drained last year the soft
 mud flows back into the ditches and hardens again so they need to be redug.
 
 The field will also be ploughed to break up the soil and loosen it, and we'll
-remove large rocks we find. After, ploughing we can level the field to flatten
-it. With the field level the rice will be at equal depths and the planting
+remove large rocks we find. After ploughing we can level the field to flatten
+it. With the field level, the rice will be at equal depths and the planting
 process is more consistent.
 
 This might be the first time someone's prepared a rice field wearing a Rust
@@ -63,9 +63,9 @@ wild boar and deer might sneak through at night and eat the rice.
 Rice fields are typically placed near rivers, before planting we have to
 flood and level the fields. We'll go down into the river, and place a wooden
 board by a drainage pipe at the edge redirecting water down that pipe and into
-a channel next to the field. We can then open hole and let water go from that 
+a channel next to the field. We can then open a hole and let water go from that 
 channel into the field. Water can then drain out of the edge of the field when
-it gets so full and it continues on down entering other fields and eventually
+it gets full, continuing on into other fields and eventually
 back into the river. The water will rejoin the river in part so that farming
 doesn't dry out rivers and ensure the longevity of the environment.
 
@@ -94,27 +94,27 @@ resulted in some work to dig down and fill the area letting water out with rocks
 harder mud and compacting it with the bucket of a digger. After this work was done
 the field held it's water and we were able to think about planting.
 
-An interesting fact is that rice doesn't actually need all this water to grow. The
+An interesting fact is that rice doesn't actually need standing water to grow. The
 water helps by stopping weeds growing around the rice taking resources and protects
-the rice from certain bugs and pests and would eat it.
+the rice from certain pests that would eat it.
 
 # Planting Day
 
-Here we go, everything we've been working for. The previous process has taken from
+Here we go, everything we've been working toward. The previous process has taken from
 mid-February and now it's early May. We go off and buy seed trays of rice to load
 into the planting machine. Below you can see a picture of the planting process:
 
 #![planting](/assets/20260401/planting.jpg)
 
-An arm will move along the bottom of the rice and rip off a clump of rice and then 
+An arm will move along the bottom of the rice and pull off a clump of rice and then 
 plunge it into the ground. It will keep moving back and forth doing this at regular
 intervals.
 
 After it's done there's some leftover rice, and there might be gaps where things
 weren't perfectly level. We go out into the field wearing
-[jika-tabi](https://en.wikipedia.org/wiki/Jika-tabi). These are boots with a split gap
+[jika-tabi](https://en.wikipedia.org/wiki/Jika-tabi). These are boots with a split 
 between the big toe and the other toes. It's meant to help our feet not get stuck in
-the wet mud. Grabbing rice in bunches of 3 or so shoots we rip them from the seed tray
+the wet mud. Grabbing rice in small bunches we pull them from the seed tray
 and plant them about an inch deep into the mud and compact some mud around it.
 
 Now the rice is in the field we're at risk of attack. Wild boar and deer just love to
@@ -136,8 +136,8 @@ will continue to grow until it's harvest time.
 
 ![ready-to-drain](/assets/20260401/half_grown.jpg)
 
-Unforunately, I left Japan a couple of weeks after draining and I haven't yet experienced
-the final stage of harvest. I have this picture I was sent of the rice near harvest time
+Unfortunately, I left Japan a couple of weeks after draining and I haven't experienced
+the final stage of harvest yet. I have this picture I was sent of the rice near harvest time
 but the final stages will have to remain shrouded in mystery for now. I'm not ready for
 spoilers when I may learn this in future firsthand:
 
@@ -161,7 +161,7 @@ of that!
 
 In rice fields you can see a lot of interesting wildlife. Frogs and salamanders help
 protect the crop by eating bugs that might feed on the rice. You also might see
-snakes nearby who feed on them as well.
+snakes nearby that feed on them as well.
 
 ![salamander](/assets/20260401/salamander.jpg)
 
@@ -175,7 +175,7 @@ be.
 
 I asked my brother-in-law about the snakes later on when he came to the truck to get
 a drink and asked if they're dangerous. And that's how I first heard the Japanese
-word 有毒な (yūdokuna) - or venomous in English. Not speaking any English he further
+word 有毒な (yūdokuna) - or venomous in English. Not speaking any English, he further
 translated it by grabbing his throat and miming frothing at the mouth.
 
 There are also black kites flying around, they've been known to swoop down and snatch
@@ -185,10 +185,10 @@ of birds with a normal smartphone camera.
 
 # Economics of Rice Farming
 
-When I was in Japan there was a rice price crisis (try saying that 3 times
-fast). With 95% increase in price, it actually became cheaper to fly to South
+When I was in Japan there was a rice price crisis (try saying that three times
+fast). With a 95% increase in price, it actually became cheaper to fly to South
 Korea, fill a suitcase with rice and fly back.  Eventually, the government
-released part of it's emergency rice supply kept in storage to tackle food
+released part of its emergency rice supply kept in storage to tackle food
 shortages and mitigate against disasters. This situation is likely to occur
 again, and as an outsider looking at how Japan's farming system is organised
 it seems unavoidable without significant reforms.
@@ -218,7 +218,7 @@ rice leading to a number of farmers planting rice for themselves and then sellin
 animal feed to make a living.
 
 Another issue is automation of farming. Reading this account of rice farming
-you might thing this seems very manual and it is. In America rice is aerially
+you might think this seems very manual and it is. In America rice is aerially
 planted. With consistency in fields and the distribution of the rice leads
 to higher yields. And if you're dealing with such small farm area that becomes
 more important - and things like aerial planting become less economically viable.
@@ -237,8 +237,8 @@ If you're interested in this there's a video about this on
 
 Reading this last section it might seem to end in doom and gloom. This isn't really
 how I wanted to sign off on things. Rice farming was a positive experience for me,
-connection with nature, building relationships with my wife's family and growing my
-Japanese skills. Doing a day of manual labour, chatting shit then going for the onsen
+a connection with nature, building relationships with my wife's family and growing my
+Japanese skills. Doing a day of manual labour, chatting shit, then going for the onsen
 and some BBQ and beers is far better than grinding away at some enterprise SaaS that
 will probably disappear in a few years.
 
