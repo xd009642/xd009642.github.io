@@ -12,6 +12,28 @@ Unfortunately, while I thought I took a lot of photos it seems I'm missing
 things I would have liked to have captured for this. Where applicable there'll
 be other sources and at least one video linked for more information.
 
+# Quick Farm Intro
+
+The farm is primarily a rice farm, there's no animals (ignoring the koi fish that
+were in the garden pond). There is a portion of a bamboo forest and space to plant
+non-rice crops so we also grow or harvest for consumption:
+
+1. Bamboo roots
+2. Mushrooms
+3. Potatoes
+4. Pumpkins/gourds
+5. Carrots
+5. Warabi - an edible bracken. Not so much planted it just grows everywhere
+6. Whatever other vegetables they decide to plant
+
+And looking out from the driveway this is the view at the end of winter before
+everything starts growing and spring properly kicks in:
+
+![the_view](/assets/20260401/the_view.png)
+
+Obviously, me and my wife aren't around all the time. When we're not my brother-in-law
+and mother-in-law work on the farm part time often 1-2 days per week each.
+
 # Preparation
 
 At the start of spring we come back to the fields. They've been left fallow
@@ -192,9 +214,12 @@ and not wanting to disturb it I moved on. After all I don't know how dangerous i
 be.
 
 I asked my brother-in-law about the snakes later on when he came to the truck to get
-a drink and asked if they're dangerous. And that's how I first heard the Japanese
-word 有毒な (yūdokuna) - or venomous in English. Not speaking any English, he further
-translated it by grabbing his throat and miming frothing at the mouth.
+a drink and asked if they're dangerous. He asked if it's brown or "blue" (aoi 青い) - it
+was brown. Also blue here isn't blue but green, historically ao used to mean the entire 
+blue-green spectrum so for some older terms (often things like animal colours), aoi is still
+used instead of the more modern word for green (midori 緑). Anyway, his response to my answer 
+is how I first heard the Japanese word 有毒な (yūdokuna) - or venomous in English. Not speaking
+any English, he further translated it by grabbing his throat and miming frothing at the mouth. 
 
 There are also black kites flying around, they've been known to swoop down and snatch
 up kittens and there are warning signs in some more populated places about keeping close
