@@ -158,10 +158,18 @@ _Fun language note, my wife asked me if I saw the tabi once and I thought she me
 a tabby cat. I wasn't aware of the name of the footwear._
 
 Now the rice is in the field we're at risk of attack. Wild boar and deer just love to
-snack on our hard work - this means it's time to put up the electric fence. We'll have
-to come back every week or so to cut the grass that sprouts up on the edge of the field.
-If we don't it will ground the fence and drain the battery and our rice will fall victim
-to the local wildlife.
+snack on our hard work - this means it's time to put up the electric fence. This is fairly
+simple drive the poles into the ground at regular intervals, then feed the wire along it
+wrapping it round the clips making sure it's moderately taut. Also check for any breaks
+in the wire and if so get a bit of electrical tape and fix it.
+
+After wiring we place a box which is just a solar panel and battery on a timer next
+to the fence and try to hammer it into the ground or prop it up securely enough with
+rocks where the dirt is too shallow.
+
+We'll have to come back every week or so to cut the grass that sprouts up on the edge
+of the field. If we don't it will ground the fence and drain the battery and our rice
+will fall victim to the local wildlife.
 
 After planting our fields look like this:
 
