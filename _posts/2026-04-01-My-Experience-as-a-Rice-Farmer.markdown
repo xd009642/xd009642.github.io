@@ -96,11 +96,11 @@ the field and eventually back into the river. For that there's an ad-hoc
 construction of some old drain and bamboo to move the water across into
 the field:
 
-#![adhoc-piping](/assets/20260401/plumbing.jpg)
+![adhoc-piping](/assets/20260401/plumbing.jpg)
 
 And the water entering that field:
 
-#![water-coming-in](../assets/20260401/filling_water.jpg)
+![water-coming-in](/assets/20260401/filling_water.jpg)
 
 After flooding, a tractor with a flat rear blade will be moved over the field
 a few times to level it. When the planting vehicle goes over the field little
@@ -135,7 +135,7 @@ have some more modern gates controlled via mobile phone.
 It's planting day, turning up I can see the neighbours have already planted and here you
 can see our ready but empty field next to their freshly planted field:
 
-![comparison](../assets/20260401/neighbours_done.jpg)
+![comparison](/assets/20260401/neighbours_done.jpg)
 
 But here we go, everything we've been working toward. The previous process has taken from
 mid-February and now it's early May. We go off and buy seed trays of rice to load
