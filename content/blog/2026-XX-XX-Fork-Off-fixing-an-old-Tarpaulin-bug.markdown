@@ -1,4 +1,4 @@
-For a while using ptrace in tarpaulin there's been potentially intermitten failures with
+For a while using ptrace in Tarpaulin there's been potentially intermittent failures with
 tests that spawn other processes or fork a process. These are mainly observed in CI and users
 often can't recreate them. Often changing other parts of the Tarpaulin run configuration would
 result in the issue going away completely and then it became easy to kick the can down the
@@ -39,7 +39,7 @@ half is a legal instruction you might just get a `SIGSEGV` later on as well.
 Because of this when `waitpit` returns an event, I call it multiple times in a loop until I have a list of
 all the events and then set about handling changes they all need and continuing/stepping them all at the end
 as needed. Throw in forks and process execs and now you have even more things and sometimes those processes will
-use signals to communicate to each other as well which have to be forwarded (some signals like segfaults tarpaulin
+use signals to communicate to each other as well which have to be forwarded (some signals like segfaults Tarpaulin
 will swallow and report as errors). This gives you all of fun of race conditions where the only way to avoid them
 is just "get gud". 
 
@@ -56,8 +56,8 @@ we've done some setup.
 
 With a flaky test though, the first thing to do should be to recreate it. Searching online I found some
 sources that said Github Actions Runners get 4 vCPU for open-source project. Github Actions runners in my
-experience tend to have wild variance in times for the same CI job so we can assume the instances do a lot
-of other things at once. To try and recreate the running environment I've ran the Rust bullseye docker
+experience tend to have wild variance in times for the same CI job so we can assume the instances are often
+fairly saturated with other jobs. To try and recreate the running environment I've ran the Rust bullseye docker
 image with 0.25 CPU and then ran Tarpaulin with 4 test threads.
 
 ```
@@ -75,4 +75,67 @@ case there was anything unclear in what could be the cause.
 # Debugging
 
 To debug this we go back to an old friend [tarpaulin-viewer](https://github.com/xd009642/tarpaulin-viewer) a
-Qt app to visualise the dumped traces from Tarpaulin.
+Qt app to visualise the dumped traces from Tarpaulin. In tarpaulin-viewer each horizontal line is a 
+thread or process ID and events are blocks placed on the line. Anything that creates a new process or thread
+ID is shown as a branch.
+
+Scrolling over to the fork and screenshotting a subset showing the failure we get:
+
+![failing_fork](/assets/2026XXXX/failing_fork.png)
+
+And then for the passing case we get:
+
+![passing_fork](/assets/2026XXXX/passing_fork.png)
+
+Because ptrace is started with options to stop on forks etc we get a SIGSTOP as the first stop on the
+forked process which is continued from. In the passing case this SIGSTOP comes the same time as the
+ptrace fork event in the parent process. In the failing case the forked child is continued, hits a breakpoint 
+which is continued and then the fork event arrives.
+
+Looking at this it seems like a clear concurrency issue, the fork event is only delivered after the fork syscall
+in the parent exits and during that time the child is able to progress arbitrarily far. But why would this cause a
+SIGILL?
+
+For each process being executed Tarpaulin maintains a map going from the process PID to the breakpoints we've
+derived for it. Knowing the state of the program and the breakpoints is important. When things like fork events
+come in or process spawns Tarpaulin will initialise the breakpoints for this process and add them into the map
+so it can run as expected. As all events are processed before responding to them when the fork event comes and
+the breakpoint map is initialised this is then used to continue the child process. This means if the fork event
+comes in the same step as the initial child SIGSTOP or the first breakpoint hit it will respond correctly. However,
+if it isn't available before the first breakpoint is hit we don't know we actually have a breakpoint there and we
+just try to continue getting the SIGILL from a misaligned instruction.
+
+# Fixing the Issue
+
+
+```rust
+
+fn get_parent(&self, pid: Pid) -> Option<Pid> {
+    self.pid_map.get(&pid).copied().or_else(|| {
+        let mut parent_pid = None;
+        'outer: for k in self.processes.keys() {
+            for tid in self.event_source.get_tids(*k) {
+                if tid == pid {
+                    parent_pid = Some(*k);
+                    break 'outer;
+                }
+            }
+        }
+        if parent_pid.is_none() {
+            parent_pid = self.get_ppid(pid);
+        }
+        parent_pid
+    })
+}
+
+fn get_ppid(&self, pid: Pid) -> Option<Pid> {
+    let proc = Process::new(pid.as_raw()).ok()?;
+    if let Ok(status) = proc.status() {
+        info!("Found potential parent");
+        let pid = Pid::from_raw(status.ppid);
+        Some(pid)
+    } else {
+        None
+    }
+}
+```
