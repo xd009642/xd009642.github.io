@@ -8,7 +8,9 @@ In the previous sections we've designed and implemented a websocket service that
 takes a stream of audio, resamples it and runs a hypothetical machine learning 
 model on it either working on voiced segments or the entire stream. This is all
 well and good but we need to have insights into the performance of the service.
-This is where the metrics come in.
+This is where the metrics come in. All code can be found 
+[here](https://github.com/xd009642/streamer-template) and in future may be split
+out into a separate branch for this chapter.
 
 Traditionally, people have aimed to hit some "3 pillars of observability". The
 three pillars are logs, metrics and distributed traces. There's some criticism
