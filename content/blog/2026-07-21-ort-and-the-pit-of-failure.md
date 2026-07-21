@@ -1,7 +1,7 @@
 +++
 title = "onnxruntime and the pit of failure"
-date = ""
-path = "2026/XX/XX/onnxruntime-and-the-pit-of-failure"
+date = "2026-07-21"
+path = "2026/07/21/onnxruntime-and-the-pit-of-failure"
 aliases = ["/2026/01/03/onnxruntime-and-the-pit-of-failure.html"]
 +++
 There's a saying of designing things so you fall into the pit-of-success.
