@@ -1,5 +1,5 @@
 +++
-title = "onnxruntime and the pit of failure"
+title = "Onnxruntime and the Pit of Failure"
 date = "2026-07-21"
 path = "2026/07/21/onnxruntime-and-the-pit-of-failure"
 aliases = ["/2026/01/03/onnxruntime-and-the-pit-of-failure.html"]
