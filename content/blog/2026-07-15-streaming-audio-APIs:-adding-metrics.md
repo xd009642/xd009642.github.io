@@ -471,7 +471,7 @@ Our current code uses a lot of `tokio::task::spawn` and
 `tokio::task::spawn_blocking` to keep data streaming through the pipeline
 stages and avoiding blocking the runtime. However, any time someone uses
 one of these functions we want them to be checking the outer error to make
-sure the spawned fucntion or future hasn't panicked. A panic would indicate
+sure the spawned function or future hasn't panicked. A panic would indicate
 something's gone wrong and either means our API should change it's health
 status or some engineer should be alerted that there's an issue in the code.
 

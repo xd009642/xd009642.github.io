@@ -1,0 +1,144 @@
+// Keep the reference's controls local; Apollo owns the site layout and palette.
+.japanese-grammar {
+  * { box-sizing: border-box; }
+  p { margin: .4rem 0; }
+  header > p { margin: 1rem 0; }
+  .page-header { line-height: 1.2; text-wrap: balance; }
+  .eyebrow, .label {
+    font-size: .75rem;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--text-1);
+  }
+  .eyebrow { display: block; margin-top: 3rem; }
+  .eyebrow + .page-header { margin-top: 1rem; }
+  .intro { font-size: 1.1rem; }
+  .notes, .translation, .card-description, .vocabulary, .card-footer, footer {
+    color: var(--text-1);
+    font-size: .9rem;
+  }
+  button, input, select { font: inherit; color: var(--text-0); }
+  button, select, summary { cursor: pointer; }
+  button, input, select {
+    background: var(--bg-0);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: .6rem .8rem;
+    min-height: 44px;
+  }
+  button:hover { background: var(--bg-2); }
+  :focus-visible { outline: 2px solid var(--primary-color); outline-offset: 3px; }
+  .controls {
+    padding: 1.25rem;
+    background: var(--bg-1);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    margin: 2rem 0 1rem;
+  }
+  .fields { display: grid; grid-template-columns: 1.5fr 1fr; gap: 1rem; }
+  .field { min-width: 0; }
+  .field label { display: block; font-size: .85rem; margin-bottom: .4rem; }
+  input, select { width: 100%; min-width: 0; }
+  .buttons { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
+  .result { align-self: center; font-size: .85rem; font-variant-numeric: tabular-nums; }
+  .grammar-sections {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: .5rem 1rem;
+    margin: 1rem 0 2rem;
+    font-size: .85rem;
+  }
+  h2 > span { color: var(--text-1); font-size: .85rem; font-weight: normal; }
+  .card {
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    margin: .75rem 0;
+    scroll-margin-top: 1rem;
+  }
+  .card > summary {
+    padding: 1rem 3rem 1rem 1.25rem;
+    list-style: none;
+    position: relative;
+    border-radius: 5px;
+  }
+  .card > summary::-webkit-details-marker { display: none; }
+  .card > summary::after {
+    content: '+';
+    position: absolute;
+    right: 1.25rem;
+    top: 1rem;
+    color: var(--primary-color);
+    font-size: 1.25rem;
+  }
+  .card[open] > summary::after { content: '−'; }
+  .card > summary:hover { background: var(--bg-1); }
+  .card[open] > summary { border-bottom: 1px solid var(--border-color); }
+  .card-title { display: block; font-family: var(--header-font); font-weight: 600; }
+  .card-description { display: block; margin-top: .25rem; }
+  .card-body { padding: 1.25rem; }
+  .pattern { background: var(--bg-1); border-radius: 4px; padding: .75rem 1rem; }
+  .pattern p, .tip p { line-height: 1.8; }
+  .example { padding: .8rem 0; border-bottom: 1px solid var(--border-color); }
+  .japanese { font-size: 1.2rem; line-height: 1.8; overflow-wrap: anywhere; }
+  .tip { border-left: 3px solid var(--primary-color); padding-left: 1rem; margin: 1.25rem 0; }
+  .vocabulary { margin-top: 1rem; }
+  .vocabulary summary { padding: .5rem 0; }
+  .vocabulary ul { columns: 2; padding-left: 1.25rem; }
+  .vocabulary li { break-inside: avoid; }
+  .card-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
+  .empty { padding: 2rem; border: 1px dashed var(--border-color); text-align: center; }
+  footer { border-top: 1px solid var(--border-color); margin-top: 3rem; padding-top: 1.5rem; }
+  .word {
+    display: inline;
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: 0;
+    border-radius: 3px;
+    padding: 0;
+    margin: 0;
+    min-height: 0;
+    cursor: help;
+    text-decoration: underline dotted var(--text-2);
+    text-underline-offset: .22em;
+  }
+  .word:hover, .word[aria-expanded="true"] { background: var(--bg-2); }
+  #word-popup {
+    position: fixed;
+    z-index: 1000;
+    max-width: min(320px, calc(100vw - 20px));
+    padding: .75rem 1rem;
+    background: var(--bg-1);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, .15);
+    overflow-wrap: anywhere;
+  }
+  #word-romaji { display: block; font-size: 1.15rem; font-weight: 600; }
+  #word-kana { display: block; color: var(--text-1); font-size: .85rem; margin: .25rem 0 .5rem; }
+  #word-jisho { display: inline-block; padding: .5rem 0; font-size: .85rem; }
+  [hidden] { display: none !important; }
+
+  @media (max-width: 600px) {
+    .fields { grid-template-columns: 1fr; }
+    .controls, .card-body { padding: 1rem; }
+    .vocabulary ul { columns: 1; }
+    .result { width: 100%; }
+  }
+}
+
+@media print {
+  @page { size: A4; margin: 14mm; }
+  body { display: block; background: white; color: black; }
+  body > .left-content, body > .right-content, .content > nav { display: none; }
+  .japanese-grammar {
+    .controls, nav, .vocabulary, .card-footer, .card > summary::after,
+    footer, .screen-note, #word-popup { display: none !important; }
+    .card { break-inside: avoid; border-color: #bbb; }
+    .card > summary, .card-body { padding: .5rem .75rem; }
+    .word { text-decoration: none; background: transparent !important; color: inherit; }
+    h2 { break-after: avoid; }
+  }
+}

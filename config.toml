@@ -35,7 +35,8 @@ repo_url = "https://github.com/xd009642/xd009642.github.io/tree/main/content/"
 
 menu = [
     { name = "/posts", url = "/", weight = 1 },
-    { name = "/about", url = "/about", weight = 2 },
+    { name = "/japanese-grammar", url = "/japanese-grammar", weight = 2 },
+    { name = "/about", url = "/about", weight = 3 },
 ]
 
 socials = [
