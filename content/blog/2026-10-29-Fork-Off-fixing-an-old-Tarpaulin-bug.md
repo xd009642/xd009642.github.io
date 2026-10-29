@@ -1,3 +1,9 @@
++++
+title = "Fork Off: fixing an old Tarpaulin bug"
+date = "2026-10-29"
+path = "2026/10/29/fork-off-fixing-an-old-tarpaulin-bug"
++++
+
 For a while using ptrace in Tarpaulin there's been potentially intermittent failures with
 tests that spawn other processes or fork a process. These are mainly observed in CI and users
 often can't recreate them. Often changing other parts of the Tarpaulin run configuration would
