@@ -43,7 +43,7 @@ socials = [
     { name = "github", url = "https://github.com/xd009642", icon = "github" },
 ]
 
-stylesheets = []
+stylesheets = ["custom.css"]
 
 [extra.taxonomies]
 sort_by = "page_count"

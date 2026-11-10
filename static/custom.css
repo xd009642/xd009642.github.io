@@ -1,0 +1,4 @@
+/* Empty Giallo lines otherwise collapse inside Apollo's flex code blocks. */
+.giallo-l {
+  min-height: 1lh;
+}
