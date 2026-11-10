@@ -155,7 +155,8 @@ Now time for a screenshot:
 ![Screenshot of traces showing a span for the panic with a backtrace and source location visible](/assets/20261110/otel-traces.png)
 
 With the backtrace enabled it will look exactly the same, minus the backtrace field
-on the event.
+on the event. It is worth noting that with backtraces disabled the handler normally
+takes about 100-200μs on my machine, with backtraces enabled it's more like 3-4ms.
 
 With all this done, the only thing I haven't really solved here is making sure
 people's usage of `tokio::task::spawn(_blocking)` doesn't lead to new root spans. 
@@ -178,4 +179,4 @@ of my work services spawn longer-running tasks anyway for blocking work. But
 this is something that can make sure a user never gets an empty API response and
 helps you track down and get rid of those panics for good. 
 
-All code can be found [here](https://github.com/xd009642/panic-gotem)
+All code can be found [here](https://github.com/xd009642/panic-gotem).
