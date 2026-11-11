@@ -144,7 +144,7 @@ all of these roughly in order with some feedback/thoughts on the pros and cons o
 
 ### Duolingo
 
-The ~~elephant~~ owl in the room. [Duolingo](duolingo.com) has been written about by a lot of people as a bad
+The ~~elephant~~ owl in the room. [Duolingo](https://www.duolingo.com) has been written about by a lot of people as a bad
 way to learn a language and that's ultimately true if it's your only tool. The issues ultimately
 boil down as follows:
 
