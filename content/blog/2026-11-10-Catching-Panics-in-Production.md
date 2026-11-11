@@ -1,5 +1,6 @@
 +++
 title = "Catching Panics in Production"
+description = "Responding to panics in your APIs ensuring they end up in your traces and metrics."
 date = "2026-11-10"
 path = "2026/11/10/Catching-Panics-in-Production"
 aliases = ["/2026/11/10/Catching-Panics-in-Production.html"]
