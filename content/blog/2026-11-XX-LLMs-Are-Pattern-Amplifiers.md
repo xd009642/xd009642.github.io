@@ -82,7 +82,10 @@ outcomes have been outsourced and there's nothing in it's place.
 The last point is probably the most damning. Without clear understanding of what problems a product solves
 you can't vibecode your way into something of quality. This should be a universally acknowledged truth.
 Instead of the product managers understanding the product or discourse between them and the devs to fall on
-a shared understanding there's nothing of value output.
+a shared understanding there's nothing of value output. Here the LLMs have amplified knowledge-boundaries.
+There's a gap between the customer and the organisation and there hasn't been an attempt to bridge it and
+foster understanding. I've also seen this in other organisations where there's siloed departments and LLMs have
+only made those silos more insurmountable.
 
 But if we did have a clarity of vision and an understanding of what product we wanted to make, how the users
 would use it and how it would improve their lives. Surely we can do better than this disjointed mismash of
