@@ -5,11 +5,11 @@ path = "2026/11/XX/LLMs-Are-Pattern-Amplifiers"
 aliases = ["/2026/11/10/LLMs-Are-Pattern-Amplifiers.html"]
 +++
 It shouldn't be a surprise to anyone that the world of software has changed a lot recently.
-We're experienced an unparalleled increase in the speed people are outputting software with
-impacts seen all over. This has been an exponetial jump in the ability to automate the production
+We're experiencing an unprecedented increase in the speed people are outputting software with
+impacts seen all over. This has been an exponential jump in the ability to automate the production
 of software and outputting of code to the point where a lot of people say they don't write a
-single line of code themselves anymore. We've also seen agents do a number of impressive feats
-and find issues that have laid dormant in software for decades without humans ever finding them.
+single line of code themselves anymore. We've also seen agents perform a number of impressive feats
+and find issues that have lain dormant in software for decades without humans ever finding them.
 
 With all this progress, why are so many of us not seeing the quality of software improve?
 You would think given the ease of generating tests, finding faults and then patching them that
@@ -20,17 +20,17 @@ of your workplace.
 ## Pattern Amplifiers?
 
 If you bring an agent into your codebase and ask it to do a task it will read files and hold an
-amount of that data in it's context. If it has to add a test your existing tests are in the
+amount of that data in its context. If it has to add a test your existing tests are in the
 context and it will often carry on with that same pattern of testing. Of course things like
 prompting, a global agents file etc can push it in other directions, but generally it will amplify
 the patterns already present. If you start a completely greenfield project and you're not establishing
 those patterns yourself, it will (from what I've seen) tend towards slop. 
 
 If things aren't possible to test with the interfaces provided and the instructions stress avoiding
-breaking changes you can see all weird types of code-golf to try and bend or break the interfaces
+breaking changes you can see all sorts of weird code golf to try and bend or break the interfaces
 in order to let it test what it wants to test. This is where culture plays a part. 
-How much you care about the quality of the craftmanship impacts a lot. If you're in an organisation
-which prioritises faster turnarounds and has historically sacrificied QA effort in favour of features
+How much you care about the quality of the craftsmanship impacts a lot. If you're in an organisation
+which prioritises faster turnarounds and has historically sacrificed QA effort in favour of features
 you'll find your LLM output mirrors those sensibilities. And as the speed and volume of the output
 increases your engineers will find themselves overwhelmed and unable to maintain whatever level of quality
 they had fought for previously.
@@ -44,20 +44,20 @@ I've been observing some work on a new product for a customer that is completely
 organisation has committed to 100% LLM generated code as fast as possible in the name of securing
 revenue. As expected it's a flashy demo in a short amount of time but there's definite quality issues.
 
-One glaring one, in order to make the customer feel more comfortable in the platform it's moving
+One glaring issue, in order to make the customer feel more comfortable in the platform it's moving
 from the standard [LLM slopstrap style](https://slopstrap.mikelacher.com/) to a light theme site.
-And launching the website I see the new light theme is deployed. I click around a few pages seeing
+When I open the website, I see the new light theme is deployed. I click around a few pages seeing
 how it's been updated and then I click on the second page in the vertical menu. 
 
 Instantly, I'm catapulted into the old dark-theme slopstrap-esque site. The vertical menu bar has
-also changed size and the elements on it. The fonts and colours are completely different. If I click
+also changed size and has different items. The fonts and colours are completely different. If I click
 home I'm back on the light theme site. Additionally, not all the old pages are in the light theme menu 
-and none of the new ones are in the dark theme menu. This leads to a scenario where somethings I can
+and none of the new ones are in the dark theme menu. This leads to a scenario where some pages I can
 only access through the UI by first going to a page without the updated style.
 
 This is something that very few engineers doing a demo for a startup would have deployed pre-LLM.
-If they had there would normally be some slightly obfuscated reason why i.e. an iframe with different
-styling from a different repo not updated. Not something that is all in a fairly simple single site
+Maybe if they had, there would normally be some slightly obfuscated reason for it, e.g. an iframe with different
+styling from a different repo not yet updated. Not something that is all in a fairly simple single site
 with no external dependencies for the frontend. For changing the style we would have changed a global
 stylesheet to the new colours and then gradually changed the designs on the individual pages as we
 got to them.
@@ -73,10 +73,10 @@ Now I am not a frontend person at all. But if I was attempting to do a project l
 LLMs I would:
 
 1. Define a design system and have it live within the repo
-2. Instructions for the agent that all pages in the app must follow the design system
-3. Have shared resources that encode that in css etc
+2. Instruct the agent that all pages in the app must follow the design system
+3. Have shared resources that encode that in CSS etc
 4. Apply design changes to the design system when they're at a global level and also to the shared resources
-5. Edit individual pages when required to update them confident that the styling is consistent
+5. Edit individual pages as needed, confident that the styling is consistent
 
 These feel like fairly minor steps that shouldn't cost any real time to the project. But when you're
 provided with the machine god and are pushed to deliver results as fast as possible things change.
@@ -88,7 +88,7 @@ and the road to apathy from those who can stop caring.
 
 Why spend time thinking about the ways the vibe-coding can fail and putting barriers in place if they
 just want it faster? Why not just wait till they raise an issue and paste it into a chat box and then
-deploy within a minute or two with "I've got a fix up now". 
+deploy within a minute or two with "I've got a fix up now"?
 
 In an organisation that values speed over quality responding so quickly to a bug with a new version
 can be seen as more impressive than never creating the issue in the first place.
