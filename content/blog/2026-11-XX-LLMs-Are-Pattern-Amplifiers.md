@@ -42,7 +42,7 @@ if you ask me privately I'll probably tell you if I know you.
 
 I've been observing some work on a new product for a customer that is completely vibecoded. The
 organisation has committed to 100% LLM generated code as fast as possible in the name of securing
-revenue. As expected it's a flashy demo in a short amount of time but there's definite quality issues.
+revenue. As expected it's a flashy demo in a short amount of time but there are clear quality issues.
 
 One glaring issue, in order to make the customer feel more comfortable in the platform it's moving
 from the standard [LLM slopstrap style](https://slopstrap.mikelacher.com/) to a light theme site.
@@ -67,30 +67,8 @@ was given to an agent which then changed the hardcoded style present in every pa
 From my perspective this felt irredeemably sloppy. I have a menu and half the links on it lead to 
 a website where every element is completely different and the styling is completely opposite.
 
-Another issue is that the product is bad. No one really understands it or knows what it should do. Product
-managers can't explain it. And when the customer feeds back a product manager might feed that into an
-LLM to create a 30+ page planning document to "help" steer the devs to delivering what the customer wants.
-
-But this is done at the cost to understanding the product. If you sit someone down and ask them to explain
-part of it and what the customer wants. Often they'll fall short of demonstrating anything beyond a surface
-level feeling. As the scope of the product increases this lack of understanding becomes "load bearing" and
-the quality gets worse. In favour of fast turnarounds ownership of the product and responsibility for the
-outcomes have been outsourced and there's nothing in it's place.
-
-## Conclusion
-
-The last point is probably the most damning. Without clear understanding of what problems a product solves
-you can't vibecode your way into something of quality. This should be a universally acknowledged truth.
-Instead of the product managers understanding the product or discourse between them and the devs to fall on
-a shared understanding there's nothing of value output. Here the LLMs have amplified knowledge-boundaries.
-There's a gap between the customer and the organisation and there hasn't been an attempt to bridge it and
-foster understanding. I've also seen this in other organisations where there's siloed departments and LLMs have
-only made those silos more insurmountable.
-
-But if we did have a clarity of vision and an understanding of what product we wanted to make, how the users
-would use it and how it would improve their lives. Surely we can do better than this disjointed mismash of
-stylings and apps glued together as an affront to consistency? I am not a frontend person at all, it's definitely
-not my wheelhouse, but if I was attempting to do a project like this fully with LLMs I would:
+I am not a frontend person at all, it's definitely not my wheelhouse, but if I was attempting to do a
+project like this fully with LLMs I would:
 
 1. Define a design system and have it live within the repo
 2. Instruct the agent that all pages in the app must follow the design system
@@ -100,6 +78,28 @@ not my wheelhouse, but if I was attempting to do a project like this fully with 
 
 These feel like fairly minor steps that shouldn't cost any real time to the project. But when you're
 provided with the machine god and are pushed to deliver results as fast as possible things change.
+
+Another issue is that the product is bad. No one really understands it or knows what it should do. Product
+managers can't explain it. And when the customer feeds back a product manager might feed that into an
+LLM to create a 30+ page planning document to "help" steer the devs to delivering what the customer wants.
+
+But this is done at the cost of understanding the product. If you sit someone down and ask them to explain
+part of it and what the customer wants. Often they'll fall short of demonstrating anything beyond a surface
+level feeling. As the scope of the product increases this lack of understanding becomes "load bearing" and
+the quality gets worse. In favour of fast turnarounds ownership of the product and responsibility for the
+outcomes have been outsourced and there's nothing in its place.
+
+## Conclusion
+
+The last point is probably the most damning. Without clear understanding of what problems a product solves
+you can't vibecode your way into something of quality. This should be a universally acknowledged truth.
+Instead of the product managers understanding the product or discourse between them and the devs to reach 
+a shared understanding there's nothing of value output. 
+
+Here the LLMs have amplified knowledge-boundaries. There's a gap between the customer and the organisation
+and there hasn't been an attempt to bridge it and foster understanding. I've also seen this in other
+organisations where there's siloed departments and LLMs have only made those silos more insurmountable.
+
 When you're prodded for estimates on every change and a "Not sure yet let me get back to you" or an
 estimate deemed too long gets instant pushback that you're somehow doing things wrong things change.
 I've seen organisations that put a lot of pressure on people to deliver fast at the expense of policy
