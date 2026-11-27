@@ -1,7 +1,7 @@
 +++
 title = "LLMs are Pattern Amplifiers"
-date = "2026-11-XX"
-path = "2026/11/XX/LLMs-Are-Pattern-Amplifiers"
+date = "2026-11-27"
+path = "2026/11/27/LLMs-Are-Pattern-Amplifiers"
 aliases = ["/2026/11/10/LLMs-Are-Pattern-Amplifiers.html"]
 +++
 It shouldn't be a surprise to anyone that the world of software has changed a lot recently.
